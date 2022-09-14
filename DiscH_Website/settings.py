@@ -95,17 +95,23 @@ WSGI_APPLICATION = 'DiscH_Website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'HOST': '127.0.0.1',
+#         'USER': 'postgres',
+#         'NAME': 'DiscH_Website',
+#         'PORT': "5432",
+#         'PASSWORD': '123m'
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': '127.0.0.1',
-        'USER': 'postgres',
-        'NAME': 'DiscH_Website',
-        'PORT': "5432",
-        'PASSWORD': '123m'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
