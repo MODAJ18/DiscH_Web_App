@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'DiscH_prototype/signup.css' %}">
+    <script src="https://kit.fontawesome.com/9fb7d64fb6.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <section id="header">
+        <div>
+            <div>'logo'</div>
+            <div>Home</div>
+            <div>'search bar'</div>
+            <div><a href="/DiscH_prototype/addA/">sign up</a></div>
+            <div><a href="/DiscH_prototype/login/">log in</a></div>
+        </div>
+    </section>
+
+    <section id="signup">
+        <form method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend><h1>Sign Up</h1></legend>
+                <!-- {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %} -->
+
+                {% if account_creation_failed %}
+                <h3>an account already exists for this email, please enter another email</h3>
+                {% endif %}
+
+                <label for="fname">First name:</label><br>
+                <input type="text" id="fname" name="fname"><br>
+
+                <label for="lname">Last name:</label><br>
+                <input type="text" id="lname" name="lname"><br><br>
+
+                <label for="Email">Email:</label><br>
+                <input type="text" id="Email" name="email"><br><br>
+
+                <label for="Password">Password:</label><br>
+                <input type="password" id="Password" name="password"><br><br>
+            </fieldset>
+            <br>
+            <input type="submit" value="Sign Up">
+        </form>
+    </section>
+
+    <!-- <script>
+         <input type="submit" onclick="getInputValue" value="addA">
+        function getInputValue(){
+            // Selecting the input element and get its value 
+            var inputVal = document.getElementById("fname").value;
+            
+            // Displaying the value
+            alert(inputVal);
+        }
+    </script> -->
+
+</body>
+</html>

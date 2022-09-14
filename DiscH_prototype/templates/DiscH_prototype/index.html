@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'DiscH_prototype/inde.css' %}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://fonts.cdnfonts.com/css/bradley-hand-2" rel="stylesheet">
+    <title>DiscH Home Page</title>
+    <!-- <script src="https://kit.fontawesome.com/9fb7d64fb6.js" crossorigin="anonymous"></script> -->
+</head>
+<body>
+    <section id="header">
+        <div>
+            <div>
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'DiscH_prototype/images/gb_app_icon.png' %}" height="30">
+                    <img src="{% static 'DiscH_prototype/images/gb_name3.png' %}" height="30">
+                </a>
+            </div>
+            <div>'searh bar'</div>
+            
+            {% if login_state %}
+            <div>
+                <div>Welcome! {{ first_name }}  {{ last_name }}</div>
+            </div>
+            <div>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Logout">
+                </form>
+            </div>
+            {% else %}
+            <div><a href="{% url 'addA' %}">sigsn up</a></div>
+            <div><a href="{% url 'login' %}">log in</a></div>
+            {% endif %}
+        </div>
+    </section>
+    {% if new_user %}
+    <h1>WELCOME NEW USER, please log in again</h1>
+    {% endif %}
+
+    <!-- <h1>Question Page</h1> -->
+    <section dir="rtl" id="Question_list">
+        <h2>الأسئلة الحديثة:</h2>
+
+        {% if recent_questions %}
+        <ul>
+            {% for question in recent_questions %}
+                <li><a href="{% url 'Question' question.question_id %}">{{ question.description|slice:":100" }}... </a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No Polls are available.</p>
+        {% endif %}
+    </section>
+
+    <script>
+
+    </script>
+</body>
+<script>
+
+</script>
+</html>
+

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- {% load static %} -->
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'DiscH_prototype/detail.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="detail.css"> -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+
+<body>
+    <section id="header">
+        <div>
+            <div>
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'DiscH_prototype/images/gb_app_icon.png' %}" height="30">
+                    <img src="{% static 'DiscH_prototype/images/gb_name3.png' %}" height="30">
+                </a>
+            </div>
+            <div>'search bar'</div>
+
+            {% if login_state %}
+            <div>
+                <div>{{ first_name }}  {{ last_name }}</div>
+<!--                <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>-->
+            </div>
+            <div>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Logout">
+                </form>
+            </div>
+            {% else %}
+<!--            <div><a href="/DiscH_prototype/addA/">sign up</a></div>-->
+            <div><a href="{% url 'addA' %}">sigsn up</a></div>
+            <div><a href="{% url 'login' %}">log in</a></div>
+            {% endif %}
+            <div>[user name]     [user picture]</div>
+        </div>
+    </section>
+
+    <section id="question_body">
+        {% if question_selected %}
+        <h1>Question No. {{ question_selected.question_id }} </h1> <!--use Question.label_in_question-->
+        <p id="main_text">"{{ question_selected.description }}"</p>  <!--Question.description-->
+        <p>What type of speech is this?</p>
+        <form method="post">
+            {% csrf_token %}
+            <ul>
+                <input type="radio" name='category' value="Racist">Racist
+                <input type="radio" name='category' value="Violent">Violent
+                <input type="radio" name='category' value="Religious affiliation">Religious affiliation
+                <input type="radio" name='category' value="Mockery">Mockery
+                <input type="radio" name='category' value="Sexual harrasment">Sexual harrasment
+                <input type="radio" name='category' value="Normal">Normal
+            </ul>
+            <input type="submit" value="choose">
+        </form>
+        {% else %}
+        <h1>no question selected!</h1>
+        {% endif %}
+    </section>
+
+    
+
+    <section id="responses">
+        <!--for every response to this question-->
+        <p>[user comments]</p> <!--Account.account_id  (TRICKY)-->
+    </section>
+
+
+    <script>
+
+        $(function(){
+            var fadeDelay = 1000;
+            var fadeDuration = 1000;
+            $(main_text).click(function(e){
+                var div = $('<div id="annotation_block">')
+                    .css({
+                        "left": e.pageX + 'px',
+                        "top": (e.pageY + 20) + 'px',
+                        "background-color": "azure",
+                        "width": "250px",
+                        "position": "absolute",
+                        "padding": '10px',
+                        "border-radius": "4px"
+                    })
+                    .appendTo(document.body);
+                var form = $(`<form method="post">
+                                <h4>Bag of Word Specification</h4>
+                                {% csrf_token %}
+                                <label for="speech">Label: </label>
+                                <br>
+                                <input type="radio" name='category_BOW' value="Racist">Racist
+                                <br>
+                                <input type="radio" name='category_BOW' value="Violent">Violent
+                                <br>
+                                <input type="radio" name='category_BOW' value="Religious affiliation">Religious affiliation
+                                <br>
+                                <input type="radio" name='category_BOW' value="Mockery">Mockery
+                                <br>
+                                <input type="radio" name='category_BOW' value="Sexual harrasment">Sexual harrasment
+                                <br>
+                                <input type="radio" name='category_BOW' value="Normal">Normal
+                                <br><br>
+                                <label>write justification: </label><br>
+                                <textarea name="justification_category_BOW" rows="6" cols="23">
+                                </textarea>
+                                <br><br>
+                                <input type="text" id="hidden_text" hidden="True" name="comment_part">
+                                <input type="submit" value="Label" onclick="toggle_div()">
+                                <input type="button" value="Cancel" onclick="remove_div()">
+                            </form>`).appendTo(div)
+                
+                let word_for_hate_speech = window.getSelection()
+                form_elem = document.getElementById("hidden_text")
+                form_elem.value = word_for_hate_speech
+            });
+        });
+
+        function remove_div() {
+            div = document.getElementById('annotation_block');
+            div.remove();     
+        }
+        function toggle_div() {
+            div = document.getElementById('annotation_block');
+            div.hidden = True;
+        }
+    </script>
+</body>
+</html>

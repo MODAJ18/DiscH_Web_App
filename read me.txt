@@ -1,0 +1,1 @@
+for .my_pgpass.conf and .pg_service.conf i set two environment variables: PGPASSFILE, PSERVICEFILE, both point at directory containing the afromentioned two files
