@@ -427,10 +427,10 @@ def question_page(request, question_id):
                 return redirect(f"/DiscH_prototype/questions/{search_value}/")
 
         if request.method == 'POST':
-            if request.method == 'POST':
-                request.session['login_state'] = False
-                logout(request)
-                return redirect('/DiscH_prototype/starting')
+            # if request.method == 'POST' and :
+            #     request.session['login_state'] = False
+            #     logout(request)
+            #     return redirect('/DiscH_prototype/starting')
 
             BOW = request.POST.get('category_BOW')
             if BOW is None:

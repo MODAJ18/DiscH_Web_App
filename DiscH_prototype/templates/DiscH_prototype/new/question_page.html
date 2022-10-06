@@ -50,13 +50,13 @@
           <div class="u-custom-menu u-nav-container">
             <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" href="{% url 'questions' %}" style="padding: 10px 20px;">Questions</a>
             </li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" href="{% url 'dashboard' %}" style="padding: 10px 20px;">Dashboard</a></li>
-            <li class="u-nav-item">
-              <form method="post" name="myForm">
-                {% csrf_token %}
-                <input type="text" name='logout' value="f" style="display: none;">
-                <a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" onClick='document.myForm.submit()' style="padding: 10px 20px;">Log out</a>
-              </form>
-            </li>
+<!--            <li class="u-nav-item">-->
+<!--              <form method="post" name="myForm">-->
+<!--                {% csrf_token %}-->
+<!--                <input type="text" name='logout' value="f" style="display: none;">-->
+<!--                <a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" onClick='document.myForm.submit()' style="padding: 10px 20px;">Log out</a>-->
+<!--              </form>-->
+<!--            </li>-->
             <li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" href="{% url 'about' %}" style="padding: 10px 20px;">About</a></li></ul>
           </div>
           <div class="u-custom-menu u-nav-container-collapse">

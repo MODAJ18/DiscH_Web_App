@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-gdyo&+d&@@4y2sit=b4-03$q-nw+h$smgth)*s#pr62chii7(i
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['disch.herokuapp.com']
+ALLOWED_HOSTS = ['disch.herokuapp.com', 'localhost']
 
 # Application definition
 
