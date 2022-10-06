@@ -1,1 +1,1 @@
-web: gunicorn disch.wsgi --log-file -
+web: gunicorn DiscH_prototype.wsgi --log-file -
