@@ -47,7 +47,7 @@ new_user = False
 
 def starting(request):
     recent_questions = Question.objects.order_by('?')[:20]
-    template = loader.get_template('DiscH_prototype/new/starting.html')
+    template = loader.get_template('DiscH_prototype/new/Starting.html')
 
     if request.user.is_authenticated:
         request.session['first_name'] = request.user.first_name
