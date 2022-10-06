@@ -17,6 +17,7 @@ import json
 from six.moves.urllib import request
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -122,13 +123,15 @@ WSGI_APPLICATION = 'DiscH_Website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': '127.0.0.1',
-        'USER': 'postgres',
-        'NAME': 'DiscH_Website',
+        'HOST': 'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
+        'USER': 'sccsrrptrucvvl',
+        'NAME': 'd345hn5e4ma3hr',
         'PORT': "5432",
-        'PASSWORD': '123m'
+        'PASSWORD': 'fda79c53eed53e5350563e092c66387f08c3a9b748cf7ec166d645a87cbb7cde'
     }
 }
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # DATABASES = {
 #     'default': {
