@@ -1,8 +1,5 @@
  .u-section-1 {
-  background-image: none;
-}
-.u-section-1 {
-  background-image: url("images/Untitled-1copy.jpg");
+  background-image: url("images/q_background.png");
   background-position: 50% 50%;
 }
 
@@ -35,7 +32,7 @@
 .u-section-1 .u-repeater-1 {
   grid-gap: 10px 10px;
   grid-template-columns: 100%;
-  min-height: 569px;
+  min-height: 917px;
 }
 
 .u-section-1 .u-list-item-1 {
@@ -198,7 +195,107 @@
   margin: -62px 53px 0 auto;
 }
 
+.u-section-1 .u-list-item-6 {
+  background-image: linear-gradient(#fef9e6, #f9e79b);
+  box-shadow: -2px 2px 8px 0 rgba(128,128,128,1);
+}
+
+.u-section-1 .u-container-layout-6 {
+  padding: 0;
+}
+
+.u-section-1 .u-shape-6 {
+  width: 15px;
+  height: 15px;
+  margin: 76px 20px 0 auto;
+}
+
+.u-section-1 .u-text-14 {
+  margin: -82px auto 0 10px;
+}
+
+.u-section-1 .u-text-15 {
+  margin: 7px 221px 0 10px;
+}
+
+.u-section-1 .u-btn-6 {
+  font-size: 1rem;
+  border-style: none none solid;
+  font-weight: normal;
+  box-shadow: -2px 2px 8px 0 rgba(128,128,128,1);
+  transition-duration: 0.5s;
+  margin: -62px 53px 0 auto;
+}
+
+.u-section-1 .u-list-item-7 {
+  background-image: linear-gradient(#fef9e6, #f9e79b);
+  box-shadow: -2px 2px 8px 0 rgba(128,128,128,1);
+}
+
+.u-section-1 .u-container-layout-7 {
+  padding: 0;
+}
+
+.u-section-1 .u-shape-7 {
+  width: 15px;
+  height: 15px;
+  margin: 76px 20px 0 auto;
+}
+
+.u-section-1 .u-text-16 {
+  margin: -82px auto 0 10px;
+}
+
+.u-section-1 .u-text-17 {
+  margin: 7px 221px 0 10px;
+}
+
+.u-section-1 .u-btn-7 {
+  font-size: 1rem;
+  border-style: none none solid;
+  font-weight: normal;
+  box-shadow: -2px 2px 8px 0 rgba(128,128,128,1);
+  transition-duration: 0.5s;
+  margin: -62px 53px 0 auto;
+}
+
+.u-section-1 .u-list-item-8 {
+  background-image: linear-gradient(#fef9e6, #f9e79b);
+  box-shadow: -2px 2px 8px 0 rgba(128,128,128,1);
+}
+
+.u-section-1 .u-container-layout-8 {
+  padding: 0;
+}
+
+.u-section-1 .u-shape-8 {
+  width: 15px;
+  height: 15px;
+  margin: 76px 20px 0 auto;
+}
+
+.u-section-1 .u-text-18 {
+  margin: -82px auto 0 10px;
+}
+
+.u-section-1 .u-text-19 {
+  margin: 7px 221px 0 10px;
+}
+
+.u-section-1 .u-btn-8 {
+  font-size: 1rem;
+  border-style: none none solid;
+  font-weight: normal;
+  box-shadow: -2px 2px 8px 0 rgba(128,128,128,1);
+  transition-duration: 0.5s;
+  margin: -62px 53px 0 auto;
+}
+
 @media (max-width: 1199px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 1047px;
+  }
+
   .u-section-1 .u-list-1 {
     width: 940px;
     margin-right: 0;
@@ -252,9 +349,40 @@
     margin-right: 22px;
     padding: 0;
   }
+
+  .u-section-1 .u-text-15 {
+    margin-right: 190px;
+  }
+
+  .u-section-1 .u-btn-6 {
+    margin-right: 22px;
+    padding: 0;
+  }
+
+  .u-section-1 .u-text-17 {
+    margin-right: 190px;
+  }
+
+  .u-section-1 .u-btn-7 {
+    margin-right: 22px;
+    padding: 0;
+  }
+
+  .u-section-1 .u-text-19 {
+    margin-right: 190px;
+  }
+
+  .u-section-1 .u-btn-8 {
+    margin-right: 22px;
+    padding: 0;
+  }
 }
 
 @media (max-width: 991px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 802px;
+  }
+
   .u-section-1 .u-list-1 {
     width: 720px;
   }
@@ -298,9 +426,37 @@
   .u-section-1 .u-btn-5 {
     margin-right: 0;
   }
+
+  .u-section-1 .u-text-15 {
+    margin-right: 0;
+  }
+
+  .u-section-1 .u-btn-6 {
+    margin-right: 0;
+  }
+
+  .u-section-1 .u-text-17 {
+    margin-right: 0;
+  }
+
+  .u-section-1 .u-btn-7 {
+    margin-right: 0;
+  }
+
+  .u-section-1 .u-text-19 {
+    margin-right: 0;
+  }
+
+  .u-section-1 .u-btn-8 {
+    margin-right: 0;
+  }
 }
 
 @media (max-width: 767px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 602px;
+  }
+
   .u-section-1 .u-text-3 {
     width: 540px;
   }
@@ -311,6 +467,10 @@
 }
 
 @media (max-width: 575px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 379px;
+  }
+
   .u-section-1 .u-text-3 {
     width: 340px;
   }
@@ -412,4 +572,46 @@
 
 .u-container-layout.hover .u-section-1 .u-text-2 {
   transform: rotate(0deg) scale(1) translateX(0px) translateY(0px) !important;
+}
+
+.u-section-1 .u-btn-6,
+.u-section-1 .u-btn-6:before,
+.u-section-1 .u-btn-6 > .u-container-layout:before {
+  transition-property: fill, color, background-color, stroke-width, border-style, border-width, border-top-width, border-left-width, border-right-width, border-bottom-width, custom-border, borders, box-shadow, text-shadow, opacity, border-radius, stroke, border-color, font-size, font-style, font-weight, text-decoration, letter-spacing, transform, background-image, background-size, background-position;
+}
+
+.u-section-1 .u-btn-6.u-btn-6.u-btn-6:hover {
+  box-shadow: 2px 2px 8px 0 rgba(128,128,128,1) !important;
+}
+
+.u-section-1 .u-btn-6.u-btn-6.u-btn-6.hover {
+  box-shadow: 2px 2px 8px 0 rgba(128,128,128,1) !important;
+}
+
+.u-section-1 .u-btn-7,
+.u-section-1 .u-btn-7:before,
+.u-section-1 .u-btn-7 > .u-container-layout:before {
+  transition-property: fill, color, background-color, stroke-width, border-style, border-width, border-top-width, border-left-width, border-right-width, border-bottom-width, custom-border, borders, box-shadow, text-shadow, opacity, border-radius, stroke, border-color, font-size, font-style, font-weight, text-decoration, letter-spacing, transform, background-image, background-size, background-position;
+}
+
+.u-section-1 .u-btn-7.u-btn-7.u-btn-7:hover {
+  box-shadow: 2px 2px 8px 0 rgba(128,128,128,1) !important;
+}
+
+.u-section-1 .u-btn-7.u-btn-7.u-btn-7.hover {
+  box-shadow: 2px 2px 8px 0 rgba(128,128,128,1) !important;
+}
+
+.u-section-1 .u-btn-8,
+.u-section-1 .u-btn-8:before,
+.u-section-1 .u-btn-8 > .u-container-layout:before {
+  transition-property: fill, color, background-color, stroke-width, border-style, border-width, border-top-width, border-left-width, border-right-width, border-bottom-width, custom-border, borders, box-shadow, text-shadow, opacity, border-radius, stroke, border-color, font-size, font-style, font-weight, text-decoration, letter-spacing, transform, background-image, background-size, background-position;
+}
+
+.u-section-1 .u-btn-8.u-btn-8.u-btn-8:hover {
+  box-shadow: 2px 2px 8px 0 rgba(128,128,128,1) !important;
+}
+
+.u-section-1 .u-btn-8.u-btn-8.u-btn-8.hover {
+  box-shadow: 2px 2px 8px 0 rgba(128,128,128,1) !important;
 }

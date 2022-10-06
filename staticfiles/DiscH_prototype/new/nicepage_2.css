@@ -1673,6 +1673,9 @@ a {
 .u-label-left label + textarea {
   flex-grow: 1;
 }
+.u-label-left .u-agree-label {
+  width: auto;
+}
 .u-form-submit.u-label-left label {
   pointer-events: none;
 }
@@ -11451,6 +11454,9 @@ section.u-image:not(.u-hover-box),
 .u-sticky {
   transition: background-color 250ms, box-shadow 250ms;
 }
+.u-header.u-box-shadow {
+  z-index: 1;
+}
 .u-overlap .u-header {
   position: absolute;
   top: 0;
@@ -16957,7 +16963,7 @@ img.u-opacity-0,
 }
 .u-language .u-icon {
   display: inline-flex;
-  height: 24px !important;
+  width: auto !important;
   vertical-align: middle;
 }
 .u-language .u-language-url,
@@ -20274,6 +20280,36 @@ section.u-dialog-block:not(.u-dialog-open) {
   right: 0;
   left: 0;
   z-index: 3;
+}
+.u-box-shadow.u-section-row:nth-child(10) {
+  z-index: 1;
+}
+.u-box-shadow.u-section-row:nth-child(9) {
+  z-index: 2;
+}
+.u-box-shadow.u-section-row:nth-child(8) {
+  z-index: 3;
+}
+.u-box-shadow.u-section-row:nth-child(7) {
+  z-index: 4;
+}
+.u-box-shadow.u-section-row:nth-child(6) {
+  z-index: 5;
+}
+.u-box-shadow.u-section-row:nth-child(5) {
+  z-index: 6;
+}
+.u-box-shadow.u-section-row:nth-child(4) {
+  z-index: 7;
+}
+.u-box-shadow.u-section-row:nth-child(3) {
+  z-index: 8;
+}
+.u-box-shadow.u-section-row:nth-child(2) {
+  z-index: 9;
+}
+.u-box-shadow.u-section-row:nth-child(1) {
+  z-index: 10;
 }
 .u-hover-box {
   overflow: hidden;
@@ -38011,6 +38047,39 @@ a.u-link.u-text-hover-grey-90:hover {
   margin: 49px auto 0;
 }
 
+.u-footer .u-social-icons-1 {
+  height: 32px;
+  min-height: 16px;
+  width: 74px;
+  min-width: 42px;
+  margin: -32px auto 0 142px;
+}
+
+.u-footer .u-icon-1 {
+  height: 100%;
+  color: rgb(0, 122, 185) !important;
+}
+
+.u-footer .u-icon-2 {
+  height: 100%;
+  color: rgb(0, 137, 203) !important;
+}
+
+.u-footer .u-btn-1 {
+  border-style: none;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  margin: -22px 59px 47px auto;
+  padding: 0;
+}
+@media (max-width: 1199px) {
+  .u-footer .u-btn-1 {
+    margin-top: -22px;
+    margin-right: 0;
+  }
+}
 
 
 @media (max-width: 575px) {

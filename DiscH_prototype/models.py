@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import datetime
 
 class Question(models.Model):
     question_id = models.IntegerField(primary_key=True)
@@ -12,12 +12,15 @@ class Achievement(models.Model):
     achievement_id = models.IntegerField(primary_key=True)
     achievement_type = models.CharField(max_length=100)
     achievement_date = models.DateField()
+    value = models.IntegerField(default=-1)
+    question_id = models.ForeignKey(Question, on_delete=models.CASCADE, default=-1)  # question_id
     account_id = models.ForeignKey(User, on_delete=models.CASCADE, default=-1)  # account_id
 
 class Answer(models.Model):
     answer_id = models.IntegerField(primary_key=True)
     answer_category_num = models.CharField(max_length=40)
-    answer_justification = models.TextField(default="")
+    answer_justification = models.TextField(default="None")
+    date = models.DateField(default=datetime.date.today() - datetime.timedelta(days=10))
     answer_upvote = models.IntegerField(default=0)
     account_id = models.ForeignKey(User, on_delete=models.CASCADE, default=-1)  # account_id
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)  # question_id
@@ -25,8 +28,9 @@ class Answer(models.Model):
 class Answer_BOW(models.Model):
     answer_id = models.IntegerField(primary_key=True)
     answer_category_num = models.CharField(max_length=40)
-    answer_text_comment = models.TextField(default="")
-    answer_justification = models.TextField(default="")
+    answer_text_comment = models.TextField(default="None")
+    answer_justification = models.TextField(default="None")
+    date = models.DateField(default=datetime.date.today() - datetime.timedelta(days=20))
     answer_upvote = models.IntegerField(default=0)
     account_id = models.ForeignKey(User, on_delete=models.CASCADE, default=-1)  # account_id
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)  # question_id

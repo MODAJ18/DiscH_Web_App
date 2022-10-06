@@ -1,0 +1,1 @@
+web: gunicorn disch.wsgi --log-file -
