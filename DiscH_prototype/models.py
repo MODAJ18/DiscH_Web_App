@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 
+# Extended user information
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(null=True, blank=True, upload_to="images/profile/")
+
 class Question(models.Model):
     question_id = models.IntegerField(primary_key=True)
     description = models.TextField()
@@ -41,3 +46,4 @@ class Comment(models.Model):
     upvote_num = models.IntegerField(default=0)
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)  # question_id
     account = models.ForeignKey(User, on_delete=models.CASCADE, default=-1)    # account_id
+    date = models.DateField(default=datetime.date.today() - datetime.timedelta(days=10))

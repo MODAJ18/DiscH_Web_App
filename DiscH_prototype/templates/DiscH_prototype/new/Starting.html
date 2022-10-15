@@ -97,7 +97,9 @@
 
 </li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" href="{% url 'about' %}" style="padding: 10px 20px;">About</a>
 </li></ul>
+
           </div>
+
           <div class="u-custom-menu u-nav-container-collapse">
             <div class="u-align-center u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
               <div class="u-inner-container-layout u-sidenav-overflow">
@@ -110,13 +112,31 @@
 
 </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="About.html">About</a>
 </li></ul>
+
               </div>
             </div>
             <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
           </div>
+
         </nav>
         <img class="u-hover-feature u-image u-image-contain u-image-round u-preserve-proportions u-image-2" src="{% static 'DiscH_prototype/new/images/gb_app_icon.png' %}" alt="" data-image-width="500" data-image-height="500" data-href="{% url 'starting' %}" data-page-id="56608174">
-      </div></header>
+
+      {% if picture %}
+              <img class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
+                     style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
+                    src="{{ picture.url }}" alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
+      {% else %}
+            {% if login_state %}
+                  <img class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
+                       style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
+                       src="/media/images/profile/default-profile-photo.jpg"
+                       alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
+            {% else %}
+
+            {% endif %}
+      {% endif %}
+
+  </div></header>
     <section class="u-carousel u-slide u-block-628c-1" id="carousel_b8a0" data-interval="50000" data-u-ride="carousel">
       <ol class="u-absolute-hcenter u-carousel-indicators u-block-628c-2">
         <li data-u-target="#carousel_b8a0" class="u-active u-grey-30" data-u-slide-to="0"></li>
@@ -127,7 +147,7 @@
         <div class="u-active u-align-center u-carousel-item u-clearfix u-image u-shading u-section-1-1" src="" data-image-width="256" data-image-height="256">
           <div class="u-clearfix u-sheet u-sheet-1">
             <h1 class="u-text u-text-default u-title u-text-1">Welcome to DiscH</h1>
-            <p class="u-large-text u-text u-text-default u-text-variant u-text-2">A Serious-Gaming Designed Web Platform, Designed for Discernment of Online Hate Speech</p>
+            <p class="u-large-text u-text u-text-default u-text-variant u-text-2">A Serious-Gaming Designed Web Platform, for Discernment of Online Hate Speech</p>
           </div>
         </div>
         <div class="u-align-left u-carousel-item u-clearfix u-image u-shading u-section-1-2 " src="" data-image-width="256" data-image-height="256">
@@ -183,7 +203,7 @@
 	c0,4.3,0.1,8.3,0.1,9.5h25.2c0-1.7,0.1-7.2,0.1-14c0-4.7-1.7-7.9-3.4-9.4C76,75.2,88,70.9,88,51.3z"></path></svg></span>
           </a>
         </div>
-        <a href="https://nicepage.com/website-design" class="u-btn u-button-style u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1">ABOUT&nbsp;<span class="u-icon u-text-palette-1-base"><svg class="u-svg-content" viewBox="0 -32 426.66667 426" style="width: 1em; height: 1em;"><path d="m213.332031 181.667969c0 4.265625-1.277343 8.53125-3.625 11.730469l-106.667969 160c-3.839843 5.761718-10.238281 9.601562-17.707031 9.601562h-64c-11.730469 0-21.332031-9.601562-21.332031-21.332031 0-4.269531 1.28125-8.535157 3.625-11.734375l98.773438-148.265625-98.773438-148.269531c-2.34375-3.199219-3.625-7.464844-3.625-11.730469 0-11.734375 9.601562-21.335938 21.332031-21.335938h64c7.46875 0 13.867188 3.839844 17.707031 9.601563l106.667969 160c2.347657 3.199218 3.625 7.464844 3.625 11.734375zm0 0"></path><path d="m426.667969 181.667969c0 4.265625-1.28125 8.53125-3.628907 11.730469l-106.664062 160c-3.839844 5.761718-10.242188 9.601562-17.707031 9.601562h-64c-11.734375 0-21.335938-9.601562-21.335938-21.332031 0-4.269531 1.28125-8.535157 3.628907-11.734375l98.773437-148.265625-98.773437-148.269531c-2.347657-3.199219-3.628907-7.464844-3.628907-11.730469 0-11.734375 9.601563-21.335938 21.335938-21.335938h64c7.464843 0 13.867187 3.839844 17.707031 9.601563l106.664062 160c2.347657 3.199218 3.628907 7.464844 3.628907 11.734375zm0 0"></path></svg><img></span>
+        <a href="{% url 'about' %}" class="u-btn u-button-style u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1">ABOUT&nbsp;<span class="u-icon u-text-palette-1-base"><svg class="u-svg-content" viewBox="0 -32 426.66667 426" style="width: 1em; height: 1em;"><path d="m213.332031 181.667969c0 4.265625-1.277343 8.53125-3.625 11.730469l-106.667969 160c-3.839843 5.761718-10.238281 9.601562-17.707031 9.601562h-64c-11.730469 0-21.332031-9.601562-21.332031-21.332031 0-4.269531 1.28125-8.535157 3.625-11.734375l98.773438-148.265625-98.773438-148.269531c-2.34375-3.199219-3.625-7.464844-3.625-11.730469 0-11.734375 9.601562-21.335938 21.332031-21.335938h64c7.46875 0 13.867188 3.839844 17.707031 9.601563l106.667969 160c2.347657 3.199218 3.625 7.464844 3.625 11.734375zm0 0"></path><path d="m426.667969 181.667969c0 4.265625-1.28125 8.53125-3.628907 11.730469l-106.664062 160c-3.839844 5.761718-10.242188 9.601562-17.707031 9.601562h-64c-11.734375 0-21.335938-9.601562-21.335938-21.332031 0-4.269531 1.28125-8.535157 3.628907-11.734375l98.773437-148.265625-98.773437-148.269531c-2.347657-3.199219-3.628907-7.464844-3.628907-11.730469 0-11.734375 9.601563-21.335938 21.335938-21.335938h64c7.464843 0 13.867187 3.839844 17.707031 9.601563l106.664062 160c2.347657 3.199218 3.628907 7.464844 3.628907 11.734375zm0 0"></path></svg><img></span>
         </a>
       </div></footer>
   

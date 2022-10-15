@@ -21,6 +21,7 @@ urlpatterns = [
     path('reg/', views.reg, name='reg'),
     path('questions/', views.questions, name='questions'),
     path('questions/<int:question_id>/', views.question_page, name='question_page'),
+    path('questions/search/<str:search_term>/', views.search_page, name='search_page'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('about/', views.about, name='about'),
     

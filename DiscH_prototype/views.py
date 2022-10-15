@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.http import Http404
-from django.db.models import Max, Sum
+from django.db.models import Max, Sum, ImageField
 from django.shortcuts import redirect
-from .models import Question
-from .models import Answer, Answer_BOW, Achievement
+from .models import Question, Comment
+from .models import Answer, Answer_BOW, Achievement, Profile
 import datetime
 
 # auth
@@ -12,8 +12,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.contrib import messages
+
+from itertools import chain
+
+from .forms import GeeksForm
 
 # from rest_framework.decorators import api_view
+import random
+
 
 # logging
 import logging
@@ -48,19 +55,30 @@ new_user = False
 def starting(request):
     recent_questions = Question.objects.order_by('?')[:20]
     template = loader.get_template('DiscH_prototype/new/Starting.html')
+    picture = None
 
     if request.user.is_authenticated:
         request.session['first_name'] = request.user.first_name
         request.session['last_name'] = request.user.last_name
         request.session['login_state'] = True
+
         if request.GET.get('search'):
             search_value = request.GET.get('search')
             try:
-                q = Question.objects.filter(question_id=search_value)
+                q = int(Question.objects.filter(question_id=search_value)[0].question_id)
             except:
                 q = None
+
             if q:
-                return redirect(f"/DiscH_prototype/questions/{search_value}/")
+                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            else:
+                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+
+        picture = Profile.objects.filter(user_id=request.user.id)
+        if picture:
+            picture = picture[0].profile_pic
+        else:
+            picture = None
     else:
         request.session['login_state'] = False
         request.session['first_name'] = None
@@ -75,13 +93,14 @@ def starting(request):
         'last_name': request.session['last_name'],
     }
     new_user = False
+    if picture:
+        context['picture'] = picture
 
     if request.method == 'POST':
         request.session['login_state'] = False
         logout(request)
         return redirect('/DiscH_prototype/starting')
 
-    # context = {}
     return HttpResponse(template.render(context, request))
 
 def questions(request):
@@ -97,15 +116,33 @@ def questions(request):
         if request.GET.get('search'):
             search_value = request.GET.get('search')
             try:
-                q = Question.objects.filter(question_id=search_value)
+                q = int(Question.objects.filter(question_id=search_value)[0].question_id)
             except:
                 q = None
+
             if q:
-                return redirect(f"/DiscH_prototype/questions/{search_value}/")
+                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            else:
+                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+
+        # if request.GET.get('search'):
+        #     search_value = request.GET.get('search')
+        #     try:
+        #         q = Question.objects.filter(question_id=search_value)
+        #     except:
+        #         q = None
+        #     if q:
+        #         return redirect(f"/DiscH_prototype/questions/{search_value}/")
 
         context = {'recent_questions': recent_questions,
                     'login_state': request.session['login_state']
         }
+        picture = Profile.objects.filter(user_id=request.user.id)
+        if picture:
+            picture = picture[0].profile_pic
+        else:
+            picture = None
+        context['picture'] = picture
         
         return HttpResponse(template.render(context, request))
     else: 
@@ -121,11 +158,14 @@ def reg(request):
     if request.GET.get('search'):
         search_value = request.GET.get('search')
         try:
-            q = Question.objects.filter(question_id=search_value)
+            q = int(Question.objects.filter(question_id=search_value)[0].question_id)
         except:
             q = None
+
         if q:
-            return redirect(f"/DiscH_prototype/questions/{search_value}/")
+            return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+        else:
+            return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
 
     if request.method == 'POST':
         # return HttpResponse(request.POST.get('fname'))  # a bit of testing
@@ -177,15 +217,17 @@ def Login(request):
     if request.GET.get('search'):
         search_value = request.GET.get('search')
         try:
-            q = Question.objects.filter(question_id=search_value)
+            q = int(Question.objects.filter(question_id=search_value)[0].question_id)
         except:
             q = None
+
         if q:
-            return redirect(f"/DiscH_prototype/questions/{search_value}/")
+            return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+        else:
+            return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
 
     if request.method == 'POST':
         email = request.POST['email']
-
         try:
             username = User.objects.get(email=email).username
         except:
@@ -213,6 +255,12 @@ def dashboard(request):
     context = {'login_state': request.session['login_state'],}
 
     if request.user.is_authenticated:
+        picture = Profile.objects.filter(user_id=request.user.id)
+        if picture:
+            picture = picture[0].profile_pic
+        else:
+            picture = None
+        context['picture'] = picture
         if request.method == 'POST':
             request.session['login_state'] = False
             logout(request)
@@ -223,11 +271,14 @@ def dashboard(request):
         if request.GET.get('search'):
             search_value = request.GET.get('search')
             try:
-                q = Question.objects.filter(question_id=search_value)
+                q = int(Question.objects.filter(question_id=search_value)[0].question_id)
             except:
                 q = None
+
             if q:
-                return redirect(f"/DiscH_prototype/questions/{search_value}/")
+                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            else:
+                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
 
         # TODO: add in a list
         recent_user_answers = Answer.objects.filter(account_id_id=current_user_id).order_by('-date')[:10]
@@ -321,8 +372,6 @@ def dashboard(request):
         logger.info('achievements set')
         logger.info(user_acheivs)
 
-
-
         # make leaderboard (table of user names / ranking)
         leaderboard_entries = Achievement.objects.values('account_id_id').annotate(total_points=Sum('value')).order_by('-total_points')[:10]
         names = []
@@ -383,9 +432,16 @@ def dashboard(request):
 
 def about(request):
     template = loader.get_template('DiscH_prototype/new/About.html')
-    context = {'login_state': request.session['login_state'], }
+    context = {'login_state': request.session['login_state'],}
 
     if request.user.is_authenticated:
+        picture = Profile.objects.filter(user_id=request.user.id)
+        if picture:
+            picture = picture[0].profile_pic
+        else:
+            picture = None
+        context['picture'] = picture
+
         if request.method == 'POST':
             request.session['login_state'] = False
             logout(request)
@@ -394,11 +450,14 @@ def about(request):
     if request.GET.get('search'):
         search_value = request.GET.get('search')
         try:
-            q = Question.objects.filter(question_id=search_value)
+            q = int(Question.objects.filter(question_id=search_value)[0].question_id)
         except:
             q = None
+
         if q:
-            return redirect(f"/DiscH_prototype/questions/{search_value}/")
+            return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+        else:
+            return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
 
     return HttpResponse(template.render(context, request))
 
@@ -416,69 +475,195 @@ def question_page(request, question_id):
             'first_name': request.session['first_name'],
             'last_name': request.session['last_name']
         }
+        context['form'] = GeeksForm()
+        picture = Profile.objects.filter(user_id=request.user.id)
+        if picture:
+            picture = picture[0].profile_pic
+        else:
+            picture = None
+        context['picture'] = picture
+
+        comments = Comment.objects.filter(question_id_id=question_id).select_related('account')
+        if comments:
+            context['comments'] = comments
+        else:
+            context['comments'] = None
+        comment_account_ids = comments.values('account_id')
+        comment_profile_pictures = []
+        gold_medals_i = []
+        silver_medals_i = []
+        bronze_medals_i = []
+        points_i = []
+        own_user_account_map = []
+
+        # information related to every user
+        for cai in comment_account_ids:
+            acc_id_i = cai['account_id']
+            if request.user.id == acc_id_i:
+                own_user_account_map.append(acc_id_i)
+            else:
+                own_user_account_map.append(None)
+
+            try:
+                comment_profile = Profile.objects.filter(user_id=acc_id_i)
+            except:
+                comment_profile = None
+
+            if comment_profile:
+                comment_picture = '/media/' + str(comment_profile[0].profile_pic)
+            else:
+                comment_picture = '/media/images/profile/default-profile-photo.jpg'
+            comment_profile_pictures.append(comment_picture)
+            user_acheivs_i = Achievement.objects.filter(account_id_id=acc_id_i)
+            gold_count = 0
+            silver_count = 0
+            bronze_count = 0
+            points_acc = 0
+            for ua_i in user_acheivs_i:
+                if ua_i.achievement_type == 'gold medal':
+                    gold_count += 1
+                elif ua_i.achievement_type == 'silver medal':
+                    silver_count += 1
+                elif ua_i.achievement_type == 'bronze medal':
+                    bronze_count += 1
+                points_acc += ua_i.value
+            gold_medals_i.append(gold_count)
+            silver_medals_i.append(silver_count)
+            bronze_medals_i.append(bronze_count)
+            points_i.append(points_acc)
+
+        context['comment_profile_pictures'] = comment_profile_pictures
+        context['gold_medals_i'] = gold_medals_i
+        context['silver_medals_i'] = silver_medals_i
+        context['bronze_medals_i'] = bronze_medals_i
+        context['points_i'] = points_i
+        context['own_user_account_map'] = own_user_account_map
+
+        # # current user pic
+        # comment_profile = Profile.objects.filter(user_id=acc_id_i)
+        # result_list = chain(comments, profiles)
 
         if request.GET.get('search'):
             search_value = request.GET.get('search')
             try:
-                q = Question.objects.filter(question_id=search_value)
+                q = int(Question.objects.filter(question_id=search_value)[0].question_id)
             except:
                 q = None
+
             if q:
-                return redirect(f"/DiscH_prototype/questions/{search_value}/")
+                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            else:
+                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
 
         if request.method == 'POST':
-            # if request.method == 'POST' and :
-            #     request.session['login_state'] = False
-            #     logout(request)
-            #     return redirect('/DiscH_prototype/starting')
+            posts = request.POST
+            if ('category_BOW' in posts) or ('category' in posts):
+                BOW = request.POST.get('category_BOW')
+                if BOW is None:
+                    category = request.POST.get('category')
+                    prev_answer = Answer.objects.filter(question_id_id=question_id, account_id_id=request.user.id)
+                    if len(prev_answer) > 0:
+                        # prev_answer_id = prev_answer[0].answer_id
+                        # print(random.randint(0, 9))
+                        # prev_answer.order_by('?')[:1].update(answer_category_num=category, answer_upvote=0)
+                        prev_answer.update(answer_category_num=category, answer_upvote=0)
+                        messages.add_message(request, messages.WARNING,
+                                             'your previous answer to this question have been replaced!')
+                        # return HttpResponse(prev_answer_id + ' changed-->' + new_changed_info)
 
-            BOW = request.POST.get('category_BOW')
-            if BOW is None:
-                category = request.POST.get('category')
-                if category is not None:
-                    try:
-                        latest_answer_id = Answer.objects.aggregate(Max('answer_id'))['answer_id__max'] + 1
-                        ans = Answer(answer_id=latest_answer_id, answer_category_num=category,
-                                     answer_justification='none were given', answer_upvote=0,
-                                     account_id_id=request.user.id, question_id_id=question_id, date=datetime.date.today())
-                    except:
-                        ans = Answer(answer_id=1, answer_category_num=category, answer_justification='none were given',
-                                     answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id,
-                                     date=datetime.date.today())
-                        ans.save()
-                        return redirect('/DiscH_prototype/questions/')
-                    # question_selected.num_response = question_selected.num_response + 1
-                    ans.save()
-                    question_selected.save()
-                else:
-                    logout_state = request.POST.get('logout')
-                    if logout_state is not None:
-                        request.session['login_state'] = False
-                        logout(request)
-                        return redirect('/DiscH_prototype/starting')
-
-                    messages.info(request, "you haven't provided a proper response!")
-                    return HttpResponseRedirect(request.path_info)
+                    else:
+                        if category is not None:
+                            try:
+                                latest_answer_id = Answer.objects.aggregate(Max('answer_id'))['answer_id__max'] + 1
+                                ans = Answer(answer_id=latest_answer_id, answer_category_num=category,
+                                             answer_justification='none were given', answer_upvote=0,
+                                             account_id_id=request.user.id, question_id_id=question_id, date=datetime.date.today())
+                            except:
+                                ans = Answer(answer_id=1, answer_category_num=category, answer_justification='none were given',
+                                             answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id,
+                                             date=datetime.date.today())
+                                ans.save()
+                                return redirect('/DiscH_prototype/questions/')
+                            # question_selected.num_response = question_selected.num_response + 1
+                            ans.save()
+                            question_selected.save()
+                        else:
+                            logout_state = request.POST.get('logout')
+                            if logout_state is not None:
+                                request.session['login_state'] = False
+                                logout(request)
+                                return redirect('/DiscH_prototype/starting')
+                            messages.info(request, "you haven't provided a proper response!")
+                            # return HttpResponseRedirect(request.path_info)
+                            # return redirect('/DiscH_prototype/questions/')
                     # return redirect('/DiscH_prototype/questions/')
-                return redirect('/DiscH_prototype/questions/')
-            else:
-                BOW_Justification = request.POST.get('justification_category_BOW')
-                BOW_comment_part = request.POST.get('comment_part')
+                else:
+                    prev_answer_BOW = Answer_BOW.objects.filter(question_id_id=question_id, account_id_id=request.user.id)
+                    BOW_Justification = request.POST.get('justification_category_BOW')
+                    BOW_comment_part = request.POST.get('comment_part')
+
+                    if len(prev_answer_BOW) > 2:
+                        # prev_answer_BOW.order_by('?').values_list('pk', flat=True)[0:1]
+                        # prev_answer_BOW.order_by('?')[:1].update(answer_category_num=BOW, answer_justification=BOW_Justification, answer_text_comment=BOW_comment_part,
+                        #                                     answer_upvote=0)
+                        random_id = prev_answer_BOW.order_by('?')[:1].get().answer_id
+                        prev_answer_BOW.filter(answer_id=random_id).update(answer_category_num=BOW,
+                                                                           answer_justification=BOW_Justification,
+                                                                           answer_text_comment=BOW_comment_part,
+                                                                           answer_upvote=0)
+                        messages.add_message(request, messages.WARNING, 'beware! one of your Bag-Of-Word responses have been replaced!')
+                    if len(prev_answer_BOW) == 2:
+                        messages.add_message(request, messages.WARNING, 'you only have 1 more Bag-Of-W  ord selection for the question, \
+                                If you have more than that, some of your BOW responses are going to be replaced')
+                    else:
+                        try:
+                            latest_answer_id = Answer_BOW.objects.aggregate(Max('answer_id'))['answer_id__max'] + 1
+                            ans = Answer_BOW(answer_id=latest_answer_id, answer_category_num=BOW,
+                                             answer_justification=BOW_Justification, answer_text_comment=BOW_comment_part,
+                                             answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id, date=datetime.date.today())
+                        except:
+                            ans = Answer_BOW(answer_id=1, answer_category_num=BOW, answer_justification=BOW_Justification,
+                                             answer_text_comment=BOW_comment_part,
+                                             answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id, date=datetime.date.today())
+                            ans.save()
+                        # question_selected.num_response = question_selected.num_response + 1
+                        # not num responses
+                        ans.save()
+                        question_selected.save()
+            elif 'post_comment' in posts:
+                comment_text = posts['question_comment']
                 try:
-                    latest_answer_id = Answer_BOW.objects.aggregate(Max('answer_id'))['answer_id__max'] + 1
-                    ans = Answer_BOW(answer_id=latest_answer_id, answer_category_num=BOW,
-                                     answer_justification=BOW_Justification, answer_text_comment=BOW_comment_part,
-                                     answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id, date=datetime.date.today())
+                    latest_comment_id = Comment.objects.aggregate(Max('comment_id'))['comment_id__max'] + 1
+                    comme = Comment(comment_id=latest_comment_id, comment=comment_text,
+                                     upvote_num=0, account_id=request.user.id, question_id_id=question_id)
                 except:
-                    ans = Answer_BOW(answer_id=1, answer_category_num=BOW, answer_justification=BOW_Justification,
-                                     answer_text_comment=BOW_comment_part,
-                                     answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id, date=datetime.date.today())
-                    ans.save()
-                # question_selected.num_response = question_selected.num_response + 1
-                # not num responses
-                ans.save()
-                question_selected.save()
-                return redirect('/DiscH_prototype/questions/')
+                    comme = Comment(comment_id=1, comment=comment_text,
+                                    upvote_num=0, account_id=request.user.id, question_id_id=question_id)
+                comme.save()
+                return redirect(request.path)
+            elif 'remove_comment' in posts:
+                id_comment_to_remove = posts['remove_comment']
+                Comment.objects.filter(comment_id=id_comment_to_remove).delete()
+                return redirect(request.path)
+            elif 'image_upload' in posts:
+                form = GeeksForm(request.POST, request.FILES)
+                if form.is_valid():
+                    img = form.cleaned_data.get("upload_image")
+
+                prev_profile = Profile.objects.filter(user_id=request.user.id)
+                if len(prev_profile) > 0:
+                    prev_profile.delete()
+                    messages.add_message(request, messages.INFO, 'profile image has changed')
+
+                try:
+                    latest_profile_id = Profile.objects.aggregate(Max('id'))['id__max'] + 1
+                    profile_new = Profile.objects.create(id=latest_profile_id, profile_pic=img, user_id=request.user.id)
+                except:
+                    profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
+                profile_new.save()
+                return redirect(request.path)
+            else:
+                return HttpResponse('unknown post')
 
         return HttpResponse(template.render(context, request))
     else:
@@ -486,6 +671,44 @@ def question_page(request, question_id):
 
     return HttpResponse(template.render(context, request))
 
+def search_page(request, search_term='none'):
+    if request.user.is_authenticated:
+        context = {
+            'login_state': request.session['login_state'],
+        }
+        template = loader.get_template('DiscH_prototype/new/Search.html')
+
+        if request.GET.get('search'):
+            search_value = request.GET.get('search')
+            try:
+                q = int(Question.objects.filter(question_id=search_value)[0].question_id)
+            except:
+                q = None
+
+            if q:
+                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            else:
+                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+
+        if request.method == 'POST':
+            request.session['login_state'] = False
+            logout(request)
+            return redirect('/DiscH_prototype/starting')
+
+        picture = Profile.objects.filter(user_id=request.user.id)
+        if picture:
+            picture = picture[0].profile_pic
+        else:
+            picture = None
+        context['picture'] = picture
+        # return HttpResponse(picture)
+
+        q = Question.objects.filter(description__contains=search_term)[:10]
+        context['questions_found'] = q
+        return HttpResponse(template.render(context, request))
+        # return HttpResponse(search_term)
+    else:
+        return redirect('/DiscH_prototype/Login/')
 
 
 

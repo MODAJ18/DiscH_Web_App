@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-gdyo&+d&@@4y2sit=b4-03$q-nw+h$smgth)*s#pr62chii7(i
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['disch.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['disch.herokuapp.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', # add this
     'corsheaders', # add this
-    'rest_framework_jwt' # add this
+    'rest_framework_jwt', # add this
+    # 'geeks',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +71,7 @@ CORS_ORIGIN_WHITELIST = (
 # ...
 
 # add the following just below STATIC_URL
-MEDIA_URL = '/media/' # add this
+MEDIA_URL = 'media/' # add this
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # add this
 
 ROOT_URLCONF = 'DiscH_Website.urls'
@@ -123,15 +124,39 @@ WSGI_APPLICATION = 'DiscH_Website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
-        'USER': 'sccsrrptrucvvl',
-        'NAME': 'd345hn5e4ma3hr',
+        'HOST': 'ec2-34-249-161-200.eu-west-1.compute.amazonaws.com',
+        'USER': 'htxlwqytgtefre',
+        'NAME': 'd8u6gs4dfnh8uv',
         'PORT': "5432",
-        'PASSWORD': 'fda79c53eed53e5350563e092c66387f08c3a9b748cf7ec166d645a87cbb7cde'
+        'PASSWORD': '03c9291468861b67fc8c7bb3f70ad228aa848c69521d711b3a41a98b6d50e1c4'
     }
 }
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'HOST': 'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
+#         'USER': 'sccsrrptrucvvl',
+#         'NAME': 'd345hn5e4ma3hr',
+#         'PORT': "5432",
+#         'PASSWORD': 'fda79c53eed53e5350563e092c66387f08c3a9b748cf7ec166d645a87cbb7cde'
+#     }
+# }
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'HOST': '127.0.0.1',
+#         'USER': 'postgres',
+#         'NAME': 'DiscH_Website',
+#         'PORT': "5432",
+#         'PASSWORD': '123m'
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
