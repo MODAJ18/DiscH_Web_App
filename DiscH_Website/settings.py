@@ -131,8 +131,8 @@ DATABASES = {
         'PASSWORD': '03c9291468861b67fc8c7bb3f70ad228aa848c69521d711b3a41a98b6d50e1c4'
     }
 }
-# db_from_env = dj_database_url.config(conn_max_age=600)
-# DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # DATABASES = {
 #     'default': {
