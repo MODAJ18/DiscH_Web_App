@@ -74,6 +74,25 @@ def starting(request):
             else:
                 return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
 
+        posts = request.POST
+        if 'image_upload' in posts:
+            form = GeeksForm(request.POST, request.FILES)
+            if form.is_valid():
+                img = form.cleaned_data.get("upload_image")
+
+            prev_profile = Profile.objects.filter(user_id=request.user.id)
+            if len(prev_profile) > 0:
+                prev_profile.delete()
+                messages.add_message(request, messages.INFO, 'profile image has changed')
+
+            try:
+                latest_profile_id = Profile.objects.aggregate(Max('id'))['id__max'] + 1
+                profile_new = Profile.objects.create(id=latest_profile_id, profile_pic=img, user_id=request.user.id)
+            except:
+                profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
+            profile_new.save()
+            return redirect(request.path)
+
         picture = Profile.objects.filter(user_id=request.user.id)
         if picture:
             picture = picture[0].profile_pic
@@ -92,6 +111,7 @@ def starting(request):
         'first_name': request.session['first_name'],
         'last_name': request.session['last_name'],
     }
+    context['form'] = GeeksForm()
     new_user = False
     if picture:
         context['picture'] = picture
@@ -109,6 +129,25 @@ def questions(request):
         recent_questions = Question.objects.order_by('?')[:8]
 
         if request.method == 'POST':
+            posts = request.POST
+            if 'image_upload' in posts:
+                form = GeeksForm(request.POST, request.FILES)
+                if form.is_valid():
+                    img = form.cleaned_data.get("upload_image")
+
+                prev_profile = Profile.objects.filter(user_id=request.user.id)
+                if len(prev_profile) > 0:
+                    prev_profile.delete()
+                    messages.add_message(request, messages.INFO, 'profile image has changed')
+
+                try:
+                    latest_profile_id = Profile.objects.aggregate(Max('id'))['id__max'] + 1
+                    profile_new = Profile.objects.create(id=latest_profile_id, profile_pic=img, user_id=request.user.id)
+                except:
+                    profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
+                profile_new.save()
+                return redirect(request.path)
+
             request.session['login_state'] = False
             logout(request)
             return redirect('/DiscH_prototype/starting')
@@ -137,6 +176,7 @@ def questions(request):
         context = {'recent_questions': recent_questions,
                     'login_state': request.session['login_state']
         }
+        context['form'] = GeeksForm()
         picture = Profile.objects.filter(user_id=request.user.id)
         if picture:
             picture = picture[0].profile_pic
@@ -261,7 +301,27 @@ def dashboard(request):
         else:
             picture = None
         context['picture'] = picture
+        context['form'] = GeeksForm()
         if request.method == 'POST':
+            posts = request.POST
+            if 'image_upload' in posts:
+                form = GeeksForm(request.POST, request.FILES)
+                if form.is_valid():
+                    img = form.cleaned_data.get("upload_image")
+
+                prev_profile = Profile.objects.filter(user_id=request.user.id)
+                if len(prev_profile) > 0:
+                    prev_profile.delete()
+                    messages.add_message(request, messages.INFO, 'profile image has changed')
+
+                try:
+                    latest_profile_id = Profile.objects.aggregate(Max('id'))['id__max'] + 1
+                    profile_new = Profile.objects.create(id=latest_profile_id, profile_pic=img, user_id=request.user.id)
+                except:
+                    profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
+                profile_new.save()
+                return redirect(request.path)
+
             request.session['login_state'] = False
             logout(request)
             return redirect('/DiscH_prototype/starting')
@@ -433,6 +493,7 @@ def dashboard(request):
 def about(request):
     template = loader.get_template('DiscH_prototype/new/About.html')
     context = {'login_state': request.session['login_state'],}
+    context['form'] = GeeksForm()
 
     if request.user.is_authenticated:
         picture = Profile.objects.filter(user_id=request.user.id)
@@ -443,6 +504,25 @@ def about(request):
         context['picture'] = picture
 
         if request.method == 'POST':
+            posts = request.POST
+            if 'image_upload' in posts:
+                form = GeeksForm(request.POST, request.FILES)
+                if form.is_valid():
+                    img = form.cleaned_data.get("upload_image")
+
+                prev_profile = Profile.objects.filter(user_id=request.user.id)
+                if len(prev_profile) > 0:
+                    prev_profile.delete()
+                    messages.add_message(request, messages.INFO, 'profile image has changed')
+
+                try:
+                    latest_profile_id = Profile.objects.aggregate(Max('id'))['id__max'] + 1
+                    profile_new = Profile.objects.create(id=latest_profile_id, profile_pic=img, user_id=request.user.id)
+                except:
+                    profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
+                profile_new.save()
+                return redirect(request.path)
+
             request.session['login_state'] = False
             logout(request)
             return redirect('/DiscH_prototype/starting')
@@ -677,6 +757,8 @@ def search_page(request, search_term='none'):
             'login_state': request.session['login_state'],
         }
         template = loader.get_template('DiscH_prototype/new/Search.html')
+        context['form'] = GeeksForm()
+
 
         if request.GET.get('search'):
             search_value = request.GET.get('search')
@@ -691,6 +773,25 @@ def search_page(request, search_term='none'):
                 return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
 
         if request.method == 'POST':
+            posts = request.POST
+            if 'image_upload' in posts:
+                form = GeeksForm(request.POST, request.FILES)
+                if form.is_valid():
+                    img = form.cleaned_data.get("upload_image")
+
+                prev_profile = Profile.objects.filter(user_id=request.user.id)
+                if len(prev_profile) > 0:
+                    prev_profile.delete()
+                    messages.add_message(request, messages.INFO, 'profile image has changed')
+
+                try:
+                    latest_profile_id = Profile.objects.aggregate(Max('id'))['id__max'] + 1
+                    profile_new = Profile.objects.create(id=latest_profile_id, profile_pic=img, user_id=request.user.id)
+                except:
+                    profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
+                profile_new.save()
+                return redirect(request.path)
+
             request.session['login_state'] = False
             logout(request)
             return redirect('/DiscH_prototype/starting')

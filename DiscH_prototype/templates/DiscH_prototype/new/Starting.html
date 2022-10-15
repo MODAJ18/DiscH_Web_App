@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="{% static 'DiscH_prototype/new/nicepage_2.css' %}" media="screen">
     <link rel="stylesheet" href="{% static 'DiscH_prototype/new/Starting.css' %}" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script class="u-script" type="text/javascript" src="{% static 'DiscH_prototype/new/jquery.js' %}" "="" defer=""></script>
     <script class="u-script" type="text/javascript" src="{% static 'DiscH_prototype/new/nicepage_2.js' %}" "="" defer=""></script>
     
@@ -122,12 +123,12 @@
         <img class="u-hover-feature u-image u-image-contain u-image-round u-preserve-proportions u-image-2" src="{% static 'DiscH_prototype/new/images/gb_app_icon.png' %}" alt="" data-image-width="500" data-image-height="500" data-href="{% url 'starting' %}" data-page-id="56608174">
 
       {% if picture %}
-              <img class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
+              <img id="prof_pic" class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
                      style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
                     src="{{ picture.url }}" alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
       {% else %}
             {% if login_state %}
-                  <img class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
+                  <img id="prof_pic" class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
                        style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
                        src="/media/images/profile/default-profile-photo.jpg"
                        alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
@@ -206,5 +207,45 @@
         <a href="{% url 'about' %}" class="u-btn u-button-style u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1">ABOUT&nbsp;<span class="u-icon u-text-palette-1-base"><svg class="u-svg-content" viewBox="0 -32 426.66667 426" style="width: 1em; height: 1em;"><path d="m213.332031 181.667969c0 4.265625-1.277343 8.53125-3.625 11.730469l-106.667969 160c-3.839843 5.761718-10.238281 9.601562-17.707031 9.601562h-64c-11.730469 0-21.332031-9.601562-21.332031-21.332031 0-4.269531 1.28125-8.535157 3.625-11.734375l98.773438-148.265625-98.773438-148.269531c-2.34375-3.199219-3.625-7.464844-3.625-11.730469 0-11.734375 9.601562-21.335938 21.332031-21.335938h64c7.46875 0 13.867188 3.839844 17.707031 9.601563l106.667969 160c2.347657 3.199218 3.625 7.464844 3.625 11.734375zm0 0"></path><path d="m426.667969 181.667969c0 4.265625-1.28125 8.53125-3.628907 11.730469l-106.664062 160c-3.839844 5.761718-10.242188 9.601562-17.707031 9.601562h-64c-11.734375 0-21.335938-9.601562-21.335938-21.332031 0-4.269531 1.28125-8.535157 3.628907-11.734375l98.773437-148.265625-98.773437-148.269531c-2.347657-3.199219-3.628907-7.464844-3.628907-11.730469 0-11.734375 9.601563-21.335938 21.335938-21.335938h64c7.464843 0 13.867187 3.839844 17.707031 9.601563l106.664062 160c2.347657 3.199218 3.628907 7.464844 3.628907 11.734375zm0 0"></path></svg><img></span>
         </a>
       </div></footer>
-  
+
+  <script>
+      $(function(){
+          $(prof_pic).click(function(e){
+              var div = $('<div id="profile_pic_upload">')
+                  .css({
+                      "left": (e.pageX - 200) + 'px',
+                      "top": (e.pageY + 30) + 'px',
+                      "background-color": "#FAF9F6",
+                      "width": "280px",
+                      "height": "170px",
+                      "position": "absolute",
+                      "padding": '10px',
+                      "border-radius": "8px",
+                      "border": "solid lightgray 2px"
+                  })
+                  .appendTo(document.body);
+              var form = $(`
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input hidden="True" name="image_upload" value="image">
+                            <input type="submit" style="font-size:12px" value="Change" onclick="toggle_div2()">
+                            <input type="button" style="font-size:12px" value="Cancel" onclick="remove_div2()">
+                        </form>
+                          `).appendTo(div)
+          });
+      });
+
+      function remove_div2() {
+          div = document.getElementById('profile_pic_upload');
+          div.remove();
+      }
+      function toggle_div2() {
+          div = document.getElementById('profile_pic_upload');
+          div.hidden = True;
+      }
+
+  </script>
+
+
 </body></html>
