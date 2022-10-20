@@ -56,6 +56,8 @@ def starting(request):
     recent_questions = Question.objects.order_by('?')[:20]
     template = loader.get_template('DiscH_prototype/new/Starting.html')
     picture = None
+    request.session['questions_game'] = None
+    request.session['question_order'] = None
 
     if request.user.is_authenticated:
         request.session['first_name'] = request.user.first_name
@@ -70,9 +72,9 @@ def starting(request):
                 q = None
 
             if q:
-                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+                return redirect(f"/questions/{int(search_value)}/")
             else:
-                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+                return redirect(f"/questions/search/{search_value}/")
 
         posts = request.POST
         if 'image_upload' in posts:
@@ -119,14 +121,20 @@ def starting(request):
     if request.method == 'POST':
         request.session['login_state'] = False
         logout(request)
-        return redirect('/DiscH_prototype/starting')
+        return redirect('/')
 
     return HttpResponse(template.render(context, request))
 
 def questions(request):
+    request.session['questions_game'] = None
+    request.session['question_order'] = None
+
     if request.user.is_authenticated:
         template = loader.get_template('DiscH_prototype/new/Questions.html')
         recent_questions = Question.objects.order_by('?')[:8]
+        context = {'recent_questions': recent_questions,
+                   'login_state': request.session['login_state']
+        }
 
         if request.method == 'POST':
             posts = request.POST
@@ -148,12 +156,21 @@ def questions(request):
                 profile_new.save()
                 return redirect(request.path)
             elif 'game' in posts:
-                context['game'] = posts['game']
+                # return HttpResponse(Question.objects.order_by('?')[:5].values_list('question_id', flat=True))
+                request.session['questions_game'] = list(Question.objects.order_by('?')[:5].values_list('question_id', flat=True))
+                request.session['question_order'] = 0  # modify this every time
+
+                # context['questions_game'] = request.session['questions_game']
+                # context['question_order'] = request.session['question_order']
+                return redirect(f"/questions/{request.session['questions_game'][request.session['question_order']]}")
+
+
+
 
 
             request.session['login_state'] = False
             logout(request)
-            return redirect('/DiscH_prototype/starting')
+            return redirect('/')
 
         if request.GET.get('search'):
             search_value = request.GET.get('search')
@@ -163,9 +180,9 @@ def questions(request):
                 q = None
 
             if q:
-                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+                return redirect(f"/questions/{int(search_value)}/")
             else:
-                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+                return redirect(f"/questions/search/{search_value}/")
 
         # if request.GET.get('search'):
         #     search_value = request.GET.get('search')
@@ -176,9 +193,6 @@ def questions(request):
         #     if q:
         #         return redirect(f"/DiscH_prototype/questions/{search_value}/")
 
-        context = {'recent_questions': recent_questions,
-                    'login_state': request.session['login_state']
-        }
         context['form'] = GeeksForm()
         picture = Profile.objects.filter(user_id=request.user.id)
         if picture:
@@ -189,7 +203,7 @@ def questions(request):
         
         return HttpResponse(template.render(context, request))
     else: 
-        return redirect('/DiscH_prototype/Login/')
+        return redirect('/Login/')
 
 def reg(request):
     template = loader.get_template('DiscH_prototype/new/Register.html')
@@ -206,9 +220,9 @@ def reg(request):
             q = None
 
         if q:
-            return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            return redirect(f"/questions/{int(search_value)}/")
         else:
-            return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+            return redirect(f"/questions/search/{search_value}/")
 
     if request.method == 'POST':
         # return HttpResponse(request.POST.get('fname'))  # a bit of testing
@@ -220,7 +234,7 @@ def reg(request):
         if password != rpassword:
             password_repeat_failed = True
             account_creation_failed = False
-            return redirect('/DiscH_prototype/reg/')
+            return redirect('/reg/')
         else:
             password_repeat_failed = False
 
@@ -228,7 +242,7 @@ def reg(request):
             if User.objects.filter(email=email):
                 account_creation_failed = True
                 request.session['account_creation_failed'] = account_creation_failed
-                return redirect('/DiscH_prototype/reg/')
+                return redirect('/reg/')
             else:
                 account_creation_failed = False
                 request.session['account_creation_failed'] = account_creation_failed
@@ -241,7 +255,7 @@ def reg(request):
 
                 user = authenticate(request, username=username, password=password)
                 login(request, user)
-                return redirect('/DiscH_prototype/starting/')
+                return redirect('/')
 
     context = {
                 'account_creation_failed': request.session['account_creation_failed'],
@@ -265,9 +279,9 @@ def Login(request):
             q = None
 
         if q:
-            return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            return redirect(f"/questions/{int(search_value)}/")
         else:
-            return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+            return redirect(f"/questions/search/{search_value}/")
 
     if request.method == 'POST':
         email = request.POST['email']
@@ -276,18 +290,18 @@ def Login(request):
         except:
             account_login_failed = True
             request.session['account_login_failed'] = account_login_failed
-            return redirect('/DiscH_prototype/Login/')
+            return redirect('/Login/')
 
         password = request.POST['password']
         if email and password:
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/DiscH_prototype/starting/')
+                return redirect('/')
             else:
                 account_login_failed = True
                 request.session['account_login_failed'] = account_login_failed
-                return redirect('/DiscH_prototype/Login/')
+                return redirect('/Login/')
 
     context = {'account_login_failed': account_login_failed}
     account_login_failed = False
@@ -296,6 +310,8 @@ def Login(request):
 def dashboard(request):
     template = loader.get_template('DiscH_prototype/new/Dashboard.html')
     context = {'login_state': request.session['login_state'],}
+    request.session['questions_game'] = None
+    request.session['question_order'] = None
 
     if request.user.is_authenticated:
         picture = Profile.objects.filter(user_id=request.user.id)
@@ -327,7 +343,7 @@ def dashboard(request):
 
             request.session['login_state'] = False
             logout(request)
-            return redirect('/DiscH_prototype/starting')
+            return redirect('/')
 
         current_user_id = request.user.id
 
@@ -339,9 +355,9 @@ def dashboard(request):
                 q = None
 
             if q:
-                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+                return redirect(f"/questions/{int(search_value)}/")
             else:
-                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+                return redirect(f"/questions/search/{search_value}/")
 
         # TODO: add in a list
         recent_user_answers = Answer.objects.filter(account_id_id=current_user_id).order_by('-date')[:10]
@@ -491,12 +507,14 @@ def dashboard(request):
 
         return HttpResponse(template.render(context, request))
     else:
-        return redirect('/DiscH_prototype/Login/')
+        return redirect('/Login/')
 
 def about(request):
     template = loader.get_template('DiscH_prototype/new/About.html')
     context = {'login_state': request.session['login_state'],}
     context['form'] = GeeksForm()
+    request.session['questions_game'] = None
+    request.session['question_order'] = None
 
     if request.user.is_authenticated:
         picture = Profile.objects.filter(user_id=request.user.id)
@@ -528,7 +546,7 @@ def about(request):
 
             request.session['login_state'] = False
             logout(request)
-            return redirect('/DiscH_prototype/starting')
+            return redirect('/')
 
     if request.GET.get('search'):
         search_value = request.GET.get('search')
@@ -538,9 +556,9 @@ def about(request):
             q = None
 
         if q:
-            return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+            return redirect(f"/questions/{int(search_value)}/")
         else:
-            return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+            return redirect(f"/questions/search/{search_value}/")
 
     return HttpResponse(template.render(context, request))
 
@@ -626,7 +644,10 @@ def question_page(request, question_id):
         # comment_profile = Profile.objects.filter(user_id=acc_id_i)
         # result_list = chain(comments, profiles)
 
+
         if request.GET.get('search'):
+            request.session['questions_game'] = None
+            request.session['question_order'] = None
             search_value = request.GET.get('search')
             try:
                 q = int(Question.objects.filter(question_id=search_value)[0].question_id)
@@ -634,9 +655,9 @@ def question_page(request, question_id):
                 q = None
 
             if q:
-                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+                return redirect(f"/questions/{int(search_value)}/")
             else:
-                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+                return redirect(f"/questions/search/{search_value}/")
 
         if request.method == 'POST':
             posts = request.POST
@@ -666,7 +687,7 @@ def question_page(request, question_id):
                                              answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id,
                                              date=datetime.date.today())
                                 ans.save()
-                                return redirect('/DiscH_prototype/questions/')
+                                return redirect('/questions/')
                             # question_selected.num_response = question_selected.num_response + 1
                             ans.save()
                             question_selected.save()
@@ -675,11 +696,11 @@ def question_page(request, question_id):
                             if logout_state is not None:
                                 request.session['login_state'] = False
                                 logout(request)
-                                return redirect('/DiscH_prototype/starting')
+                                return redirect('/')
                             messages.info(request, "you haven't provided a proper response!")
                             # return HttpResponseRedirect(request.path_info)
-                            # return redirect('/DiscH_prototype/questions/')
-                    # return redirect('/DiscH_prototype/questions/')
+                            # return redirect('/questions/')
+                    # return redirect('/questions/')
                 else:
                     prev_answer_BOW = Answer_BOW.objects.filter(question_id_id=question_id, account_id_id=request.user.id)
                     BOW_Justification = request.POST.get('justification_category_BOW')
@@ -714,6 +735,8 @@ def question_page(request, question_id):
                         ans.save()
                         question_selected.save()
             elif 'post_comment' in posts:
+                request.session['questions_game'] = None
+                request.session['question_order'] = None
                 comment_text = posts['question_comment']
                 try:
                     latest_comment_id = Comment.objects.aggregate(Max('comment_id'))['comment_id__max'] + 1
@@ -725,10 +748,14 @@ def question_page(request, question_id):
                 comme.save()
                 return redirect(request.path)
             elif 'remove_comment' in posts:
+                request.session['questions_game'] = None
+                request.session['question_order'] = None
                 id_comment_to_remove = posts['remove_comment']
                 Comment.objects.filter(comment_id=id_comment_to_remove).delete()
                 return redirect(request.path)
             elif 'image_upload' in posts:
+                request.session['questions_game'] = None
+                request.session['question_order'] = None
                 form = GeeksForm(request.POST, request.FILES)
                 if form.is_valid():
                     img = form.cleaned_data.get("upload_image")
@@ -745,16 +772,28 @@ def question_page(request, question_id):
                     profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
                 profile_new.save()
                 return redirect(request.path)
+            elif 'game' in posts:
+                request.session['question_order'] = request.session['question_order'] + 1
+                if request.session['question_order'] == 5:
+                    request.session['questions_game'] = None
+                    request.session['question_order'] = None
+                    return redirect(f"/questions")
+
+                # context['questions_game'] = request.session['questions_game']
+                # context['question_order'] = request.session['question_order']
+                return redirect(f"/questions/{request.session['questions_game'][request.session['question_order']]}")
             else:
                 return HttpResponse('unknown post')
 
         return HttpResponse(template.render(context, request))
     else:
-        return redirect('/DiscH_prototype/Login/')
+        return redirect('/Login/')
 
     return HttpResponse(template.render(context, request))
 
 def search_page(request, search_term='none'):
+    request.session['questions_game'] = None
+    request.session['question_order'] = None
     if request.user.is_authenticated:
         context = {
             'login_state': request.session['login_state'],
@@ -771,9 +810,9 @@ def search_page(request, search_term='none'):
                 q = None
 
             if q:
-                return redirect(f"/DiscH_prototype/questions/{int(search_value)}/")
+                return redirect(f"/questions/{int(search_value)}/")
             else:
-                return redirect(f"/DiscH_prototype/questions/search/{search_value}/")
+                return redirect(f"/questions/search/{search_value}/")
 
         if request.method == 'POST':
             posts = request.POST
@@ -797,7 +836,7 @@ def search_page(request, search_term='none'):
 
             request.session['login_state'] = False
             logout(request)
-            return redirect('/DiscH_prototype/starting')
+            return redirect('/')
 
         picture = Profile.objects.filter(user_id=request.user.id)
         if picture:
@@ -812,149 +851,4 @@ def search_page(request, search_term='none'):
         return HttpResponse(template.render(context, request))
         # return HttpResponse(search_term)
     else:
-        return redirect('/DiscH_prototype/Login/')
-
-
-
-def index(request):
-    recent_questions = Question.objects.order_by('?')[:20]
-    template = loader.get_template('DiscH_prototype/index.html')
-
-    if request.user.is_authenticated:
-        request.session['first_name'] = request.user.first_name
-        request.session['last_name'] = request.user.last_name
-        request.session['login_state'] = True
-    else:
-        request.session['login_state'] = False
-        request.session['first_name'] = None
-        request.session['last_name'] = None
-
-    global new_user
-    context = {
-        'recent_questions': recent_questions,
-        'new_user': new_user,
-        'login_state': request.session['login_state'],
-        'first_name': request.session['first_name'],
-        'last_name': request.session['last_name'],
-    }
-    new_user = False
-
-    if request.method == 'POST':
-        request.session['login_state'] = False
-        logout(request)
-        return redirect('/DiscH_prototype/starting')
-
-    return HttpResponse(template.render(context, request))
-def question(request, question_id):  # later add question_id
-    if request.user.is_authenticated:
-        try:
-            question_selected = Question.objects.get(pk=question_id)
-        except Question.DoesNotExist:
-            raise Http404("Question does not exist")
-
-        template = loader.get_template('DiscH_prototype/detail.html')
-        context = {
-            'question_selected': question_selected,
-            'login_state': request.session['login_state'],
-            'first_name': request.session['first_name'],
-            'last_name': request.session['last_name']
-        }
-
-        if request.method == 'POST':
-            BOW = request.POST.get('category_BOW')
-            if BOW is None:
-                category = request.POST.get('category')
-                if category is not None:
-                    try:
-                        latest_answer_id = Answer.objects.aggregate(Max('answer_id'))['answer_id__max'] + 1
-                        ans = Answer(answer_id=latest_answer_id, answer_category_num=category, answer_justification='none were given',
-                                     answer_upvote=0, account_id_id=1, question_id_id=question_id)
-                    except:
-                        ans = Answer(answer_id=1, answer_category_num=category, answer_justification='none were given', answer_upvote=0, account_id_id=1, question_id_id=question_id)
-                        ans.save()
-                        return HttpResponse('category: {}\t answer_id: 1\t first response!'.format(category))
-                    question_selected.num_response = question_selected.num_response + 1
-                    ans.save()
-                    question_selected.save()
-                else:
-                    return redirect('/DiscH_prototype/')
-
-            else:
-                BOW_Justification = request.POST.get('justification_category_BOW')
-                BOW_comment_part = request.POST.get('comment_part')
-                try:
-                    latest_answer_id = Answer_BOW.objects.aggregate(Max('answer_id'))['answer_id__max'] + 1
-                    ans = Answer_BOW(answer_id=latest_answer_id, answer_category_num=BOW,
-                                answer_justification=BOW_Justification, answer_text_comment=BOW_comment_part,
-                                answer_upvote=0, account_id_id=1, question_id_id=question_id)
-                except:
-                    ans = Answer_BOW(answer_id=1, answer_category_num=BOW, answer_justification=BOW_Justification,
-                                    answer_text_comment=BOW_comment_part,
-                                answer_upvote=0, account_id_id=1, question_id_id=question_id)
-                    ans.save()
-                # question_selected.num_response = question_selected.num_response + 1
-                # not num responses
-                ans.save()
-                question_selected.save()
-                redirect('/DiscH_prototype')
-
-        return HttpResponse(template.render(context, request))
-    else:
-        return redirect('/DiscH_prototype/login/')
-def addAccount(request):
-    template = loader.get_template('DiscH_prototype/signup.html')
-    global account_creation_failed, new_user
-    request.session['account_creation_failed'] = account_creation_failed
-
-    if request.method == 'POST':
-        # return HttpResponse(request.POST.get('fname'))  # a bit of testing
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        if fname and lname and email and password:
-            if User.objects.filter(email=email):
-                account_creation_failed = True
-                request.session['account_creation_failed'] = account_creation_failed
-                return redirect('/DiscH_prototype/addA/')
-            else:
-                account_creation_failed = False
-                request.session['account_creation_failed'] = account_creation_failed
-                user = User.objects.create_user(username=fname + ' ' + lname, email=email, password=password,
-                                                first_name=fname, last_name=lname)
-                user.set_password(password)
-                user.save()
-                request.session['new_user'] = True
-                new_user = True
-                return redirect('/DiscH_prototype/')
-
-    context = {'account_creation_failed': request.session['account_creation_failed']}
-
-    return HttpResponse(template.render(context, request))
-def login_acc(request):
-    template = loader.get_template('DiscH_prototype/login.html')
-    global account_login_failed
-    request.session['account_login_failed'] = account_login_failed
-
-    if request.method == 'POST':
-        email = request.POST['email']
-        username = User.objects.get(email=email).username
-        password = request.POST['password']
-        if email and password:
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/DiscH_prototype/')
-            else:
-                account_login_failed = True
-                request.session['account_login_failed'] = account_login_failed
-                return redirect('/DiscH_prototype/login/')
-
-    context = {'account_login_failed': account_login_failed}
-    return HttpResponse(template.render(context, request))
-
-
-def public(request):
-    return HttpResponse("You don't need to be authenticated to see this")
-def private(request):
-    return HttpResponse("You should not see this message if not authenticated!")
+        return redirect('/Login/')
