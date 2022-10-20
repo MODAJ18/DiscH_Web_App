@@ -147,6 +147,9 @@ def questions(request):
                     profile_new = Profile.objects.create(id=1, profile_pic=img, user_id=request.user.id)
                 profile_new.save()
                 return redirect(request.path)
+            elif 'game' in posts:
+                context['game'] = posts['game']
+
 
             request.session['login_state'] = False
             logout(request)

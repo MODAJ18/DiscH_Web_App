@@ -26,6 +26,34 @@
     <meta name="theme-color" content="#478ac9">
     <meta property="og:title" content="Questions">
     <meta property="og:type" content="website">
+
+    <style>
+      .btn-grad-mod {
+            background-image: linear-gradient(to right, #24C6DC 0%, #514A9D  51%, #24C6DC  100%);
+            margin: 10px;
+            padding: 15px 45px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;            
+            box-shadow: 0 0 20px #eee;
+            border-radius: 10px;
+            width: 200px;
+            position: absolute;
+            align-items: center;
+            text-decoration: none;
+            display: flex;
+            margin-left: 1100px;
+            margin-top: 100px;
+          }
+
+          .btn-grad-mod:hover {
+            background-position: right center; /* change the direction of the change here */
+            color: rgb(203, 203, 203);
+            text-decoration: none;
+          }
+    </style>
   </head>
   <body class="u-body u-xl-mode" data-lang="en"><header class="u-align-center-xs u-border-1 u-border-grey-25 u-clearfix u-header u-header" id="sec-14f5"><div class="u-clearfix u-sheet u-sheet-1">
         <a href="{% url 'starting' %}" data-page-id="56608174" class="u-image u-logo u-image-1" data-image-width="201" data-image-height="48" title="Starting">
@@ -97,8 +125,26 @@
       {% endif %}
 
   </div></header>
+
     <section class="u-align-center u-clearfix u-white u-section-1" id="sec-fe3e">
       <div class="u-clearfix u-sheet u-sheet-1">
+        
+
+<!--        <form method="POST" id="game_form">-->
+<!--          {% csrf_token %}-->
+<!--          <input hidden="True" name="game" value="start">-->
+<!--        </form>-->
+<!--        <h5 style="position:absolute; margin-left: 1050px; margin-top: 75px; width: 350px; font-size: 16px;">Wanna make this more fun? Try this</h5>-->
+<!--        <a href="javascript:{}" onclick="document.getElementById('game_form').submit();" class="btn-grad-mod" style="">-->
+<!--          <span><img src="{% static 'DiscH_prototype/new/images/808476.png' %}" alt="game icon" style="height: 40px; margin-right: 20px; "></span>-->
+<!--          <span style="text-decoration: none; font-weight: bold; font-size: 18px;">Play</span>-->
+<!--        </a>-->
+
+
+        <!-- <h4 class="u-text u-text-1">Wanna make this more fun? Try this</h4>
+        <a href="https://nicepage.com/k/offer-html-templates" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">
+          <span class="u-file-icon u-icon u-icon-1"><img src="images/808476.png" alt=""></span>&nbsp;<span style="font-size: 1rem;">Play</span>
+        </a> -->
         <h5 class="u-text u-text-default u-text-1">the Catalog</h5>
         <h1 class="u-hover-feature u-text u-text-default u-text-2">List of Hate Speech Questions</h1>
         <p class="u-text u-text-3">Browse the catalogue of questions to see which ones interest you the most!</p>

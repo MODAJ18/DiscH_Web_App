@@ -10,13 +10,7 @@ router.register(r'questions', QuestionViewSet)
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<int:question_id>/', views.question, name='Question'),  # change later to <int:question_id>
-    path('addA/', views.addAccount, name='addA'),  # function
-    path('login/', views.login_acc, name='login'),
-    path("api/", include(router.urls)),
-
-    path('starting/', views.starting, name='starting'),
+    path('', views.starting, name='starting'),
     path('Login/', views.Login, name='Login'),
     path('reg/', views.reg, name='reg'),
     path('questions/', views.questions, name='questions'),

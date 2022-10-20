@@ -125,6 +125,16 @@
     {% endif %}
     <section class="u-align-center u-clearfix u-image u-section-1" id="carousel_15c1" data-image-width="951" data-image-height="580">
       <div class="u-clearfix u-sheet u-sheet-1">
+
+
+
+<!--         <h1 id="DiscH_Timer" style="position:absolute; margin-top: 100px; margin-left: -210px; color:azure">60</h1> -->
+
+
+
+
+
+
         <div class="u-align-left u-container-style u-group u-radius-50 u-shape-round u-white u-group-1">
           <div style="height: 740px" class="u-container-layout u-container-layout-1">
             <div class="u-border-2 u-border-palette-1-base u-opacity u-opacity-85 u-shape u-shape-top u-shape-1"></div>
@@ -485,6 +495,33 @@
           div = document.getElementById('profile_pic_upload');
           div.hidden = True;
       }
+
+
+
+
+
+      /* TIMER SCRIPT */
+      var MS_PER_MINUTE = 60000;
+      var countDownDate = new Date().getTime();
+      countDownDate = new Date(countDownDate + 60300).getTime();
+
+      var x = setInterval(function() {
+        /* Get today's date and time */
+        var now = new Date().getTime();
+
+        /* Find the distance between now and the count down date */
+        var distance = countDownDate - now;
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("DiscH_Timer") .innerHTML = seconds;
+
+        /* If the count down is finished, write some text */
+        if (distance < 0) {
+          clearInterval(x);
+          /* // add func here later */
+          document.getElementById("DiscH_Timer").innerHTML = "EXPIRED";
+        }
+      }, 1000);
 
   </script>
   

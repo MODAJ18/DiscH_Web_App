@@ -19,7 +19,7 @@ from django.conf import settings             # add this
 from django.conf.urls.static import static   # add this
 
 urlpatterns = [
-    path('DiscH_prototype/', include('DiscH_prototype.urls')),
+    path('', include('DiscH_prototype.urls')),
     path('admin/', admin.site.urls),
 ]
 
