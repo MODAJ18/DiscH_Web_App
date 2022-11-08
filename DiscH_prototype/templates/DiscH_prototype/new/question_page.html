@@ -49,6 +49,19 @@
 <!--        .thumbdown:hover {-->
 <!--            background: url("/media/images/hand-thumbs-down-fill.svg") no-repeat;-->
 <!--        }-->
+
+        #text_line {
+          opacity: 1;
+          transition: opacity 0.3s ease-in-out;
+        }
+        #text_line.fade {
+          opacity: 0;
+        }
+
+        .text_selection_mod::selection {
+          color: gray;
+          background: lightblue;
+        }
     </style>
 
   </head>
@@ -143,8 +156,8 @@
 
 
 
-        <div class="u-align-left u-container-style u-group u-radius-50 u-shape-round u-white u-group-1">
-          <div style="height: 740px" class="u-container-layout u-container-layout-1">
+        <div class="u-align-left u-container-style u-group u-radius-50 u-shape-round u-white u-group-1" style="height: 870px">
+          <div class="u-container-layout u-container-layout-1" >
             <div class="u-border-2 u-border-palette-1-base u-opacity u-opacity-85 u-shape u-shape-top u-shape-1"></div>
             <div class="u-shape u-shape-svg u-text-palette-1-base u-shape-2">
               <svg class="u-svg-link" preserveAspectRatio="none" viewBox="0 0 160 74" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-5691"></use></svg>
@@ -195,14 +208,17 @@
             {% if question_selected %}
             <h3 class="u-text u-text-default u-text-1">Question {{ question_selected.question_id }}<br>
             </h3>
-            <div style="height: 550px" class="u-align-left u-container-style u-gradient u-group u-radius-25 u-shape-round u-group-2">
+            <div style="height: 680px" class="u-align-left u-container-style u-gradient u-group u-radius-25 u-shape-round u-group-2">
               <div class="u-container-layout u-container-layout-2">
                 <div class="u-container-style u-group u-radius-30 u-shape-round u-white u-group-3">
                   <div class="u-container-layout u-container-layout-3">
-                    <p class="u-text u-text-2" id="main_text"> "{{ question_selected.description|slice:":1000" }}" </p>
+                    <p class="u-text u-text-2 text_selection_mod" id="main_text"> "{{ question_selected.description|slice:":1000" }}" </p>
                   </div>
                 </div>
-                <p style="margin-left: 20px"><b>What type of speech is this?</b></p>
+                <p style="margin-left: 20px; font-size: 20px"><b>What type of speech is this?</b></p>
+
+
+
               <form method="post" name="annotate">
                   {% csrf_token %}
                   <ul>
@@ -212,7 +228,17 @@
                       <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Mockery">Mockery
                       <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Sexual harrasment">Sexual harassment
                       <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Normal">Normal
+                      <input hidden="True" name="category_BOW" value="">
+                      <input hidden="True" name="justification_category_BOW" value="">
+                      <input hidden="True" name="question_answered" value="True">
+<!--                      <input hidden="True" name="post_comment" value="">-->
+<!--                      <input hidden="True" name="remove_comment" value="">-->
                   </ul>
+                  <div class="u-form-group u-form-message u-form-partition-factor-2 u-label-top" style="margin-left: 25px; width: 800px">
+                    <label for="message-19be" class="u-label u-label-7">Justification for choosing the type</label>
+                        <textarea placeholder="write here .." name="justification_category" rows="3" cols="50" id="message-19be" style="font-size: 12px"
+                              class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white"></textarea>
+                  </div>
                   <a class="u-active-none u-border-2 u-border-active-palette-2-dark-1 u-border-hover-palette-2-base u-border-palette-1-base u-btn u-button-style u-hover-none u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1" onClick='document.annotate.submit()'>Submit Answer</a>
               </form>
 
@@ -260,7 +286,7 @@
             <div class="col-md-8">
 
                 <div class="headings d-flex justify-content-between align-items-center mb-3">
-                    <h5>(Feedback) What do you think the answer is?</h5>
+                    <h5>Question Justifications</h5>
                     <div class="buttons">
                     </div>
                 </div>
@@ -356,36 +382,37 @@
 <!--                  </ul>-->
 <!--                  <a class="u-active-none u-border-2 u-border-active-palette-2-dark-1 u-border-hover-palette-2-base u-border-palette-1-base u-btn u-button-style u-hover-none u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1" onClick='document.annotate.submit()'>Submit Answer</a>-->
 <!--              </form>-->
+                <br><br>
 
-            <form method="post" name="comment">
-              {% csrf_token %}
-                <div class="card p-3 mt-2" style="margin-bottom: 50px">
-                    <p>Add a comment</p>
-                    <div class="d-flex justify-content-between align-items-center">
+<!--            <form method="post" name="comment">-->
+<!--              {% csrf_token %}-->
+<!--                <div class="card p-3 mt-2" style="margin-bottom: 50px">-->
+<!--                    <p>Add a comment</p>-->
+<!--                    <div class="d-flex justify-content-between align-items-center">-->
 
-                        <div class="user d-flex flex-row align-items-center">
-                            {% if picture %}
-                                    <img src="{{ picture.url }}" width="25" height="25" class="user-img rounded-circle mr-2">
-                            {% else %}
-                                    <img src="/media/images/profile/default-profile-photo.jpg" width="25" height="25" class="user-img rounded-circle mr-2">
-                            {% endif %}
+<!--                        <div class="user d-flex flex-row align-items-center">-->
+<!--                            {% if picture %}-->
+<!--                                    <img src="{{ picture.url }}" width="25" height="25" class="user-img rounded-circle mr-2">-->
+<!--                            {% else %}-->
+<!--                                    <img src="/media/images/profile/default-profile-photo.jpg" width="25" height="25" class="user-img rounded-circle mr-2">-->
+<!--                            {% endif %}-->
 
 
-                        <span style="width: 600px; margin-left: 10px;">
-                            <textarea name="question_comment" rows="3" cols="85"></textarea>
-                        </span>
-                        </div>
-                    </div>
+<!--                        <span style="width: 600px; margin-left: 10px;">-->
+<!--                            <textarea name="question_comment" rows="3" cols="85"></textarea>-->
+<!--                        </span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    <div class="action d-flex justify-content-between mt-2 align-items-center">
-                        <div class="reply px-4">
-                        </div>
-                        <div class="icons align-items-center">
-                            <input type="submit" name="post_comment" value="Post Comment">
-                        </div>
-                    </div>
-                </div>
-            </form>
+<!--                    <div class="action d-flex justify-content-between mt-2 align-items-center">-->
+<!--                        <div class="reply px-4">-->
+<!--                        </div>-->
+<!--                        <div class="icons align-items-center">-->
+<!--                            <input type="submit" name="post_comment" value="Post Comment">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
 
 
             </div>
@@ -423,57 +450,117 @@
         }
 
 
+        function getRandomColor() {
+              var letters = '56789ABCDEF';
+              var color = '#';
+              for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 11)];
+              }
+              return color;
+            }
+
+
+      var counter = 0;
+      var prev_x1 = -1;
+      var prev_x2 = -1;
+      var add_from_prev = 0;
+      var addedlines = new Array();
+      var randomColor = null;
       $(function(){
           var fadeDelay = 1000;
           var fadeDuration = 1000;
           $(main_text).click(function(e){
-              var div = $('<div id="annotation_block">')
-                  .css({
-                      "left": e.pageX + 'px',
-                      "top": (e.pageY + 20) + 'px',
-                      "background-color": "azure",
-                      "width": "350px",
-                      "position": "absolute",
-                      "padding": '10px',
-                      "border-radius": "4px"
-                  })
-                  .appendTo(document.body);
-              var form = $(`<form method="post">
-                              <h3>Bag of Word Specification</h3>
-                              {% csrf_token %}
-                              <label for="speech">Label: </label>
-                              <br>
-                              <input type="radio" name='category_BOW' value="Racist">Racist
-                              <br>
-                              <input type="radio" name='category_BOW' value="Violent">Violent
-                              <br>
-                              <input type="radio" name='category_BOW' value="Religious affiliation">Religious affiliation
-                              <br>
-                              <input type="radio" name='category_BOW' value="Mockery">Mockery
-                              <br>
-                              <input type="radio" name='category_BOW' value="Sexual harrasment">Sexual harrasment
-                              <br>
-                              <input type="radio" name='category_BOW' value="Normal">Normal
-                              <br><br>
-                              <label>write justification: </label><br>
-                              <textarea name="justification_category_BOW" rows="7" cols="32">
-                              </textarea>
-                              <br><br>
-                              <input type="text" id="hidden_text" hidden="True" name="comment_part">
-                              <input type="submit" value="Label" onclick="toggle_div()">
-                              <input type="button" value="Cancel" onclick="remove_div()">
-                          </form>
-                          `).appendTo(div)
-              
-              let word_for_hate_speech = window.getSelection()
-              form_elem = document.getElementById("hidden_text")
-              form_elem.value = word_for_hate_speech
+              counter = counter + 1
+              oRange = window.getSelection().getRangeAt(0);
+              oRect = oRange.getBoundingClientRect();
+              beginPosition = oRect
+
+              var conveniancecount = $("div[id*='annotation_block']").length;
+              var selected = String(window.getSelection()).trim();
+
+              begin_x = beginPosition.x
+              begin_y = Math.max(beginPosition.y - 5, e.pageY - 15)
+
+              if ((begin_x > prev_x1 && begin_x < prev_x2) || (e.pageX > prev_x1 && e.pageX < prev_x2)) {
+                add_from_prev = add_from_prev + 6
+              }
+              else {
+                add_from_prev = 0
+              }
+              prev_x1 = begin_x
+              prev_x2 = e.pageX
+              end_x = begin_x + beginPosition.width
+              var line_width = end_x - begin_x
+              mid_x = (begin_x + end_x)/2
+              mid_y = (begin_y + begin_y + 20)/2
+
+              if (conveniancecount < 1 && selected.length > 0) {
+                  randomColor = getRandomColor();
+                  var line = $('<div id="text_line">')
+                            .hide()
+                            .fadeIn(250).css({
+                              "position": "absolute",
+                              "left": begin_x + 'px',
+                              "top": (begin_y + 25 + add_from_prev) + 'px',
+                              "background-color": randomColor,
+                              "width":  (end_x-begin_x) + "px",
+                              "height": "3px",
+                              "border-radius": "4px"
+                          });
+                    $(document.body).append(line);
+                    addedlines.push(line);
+
+                  var div = $('<div id="annotation_block">')
+                      .hide().fadeIn(250)
+                      .css({
+                          "left": e.pageX + 'px',
+                          "top": (e.pageY + 20) + 'px',
+                          "background-color": "azure",
+                          "width": "350px",
+                          "position": "absolute",
+                          "padding": '10px',
+                          "border-radius": "4px"
+
+                      });
+                  $(document.body).append(div);
+                  var form = $(`<form method="post">
+                                  <h3>Bag of Word Specification</h3>
+                                  {% csrf_token %}
+                                  <label for="speech">Label: </label>
+                                  <br>
+                                  <input type="radio" name='category_BOW_part' value="Racist">Racist
+                                  <br>
+                                  <input type="radio" name='category_BOW_part' value="Violent">Violent
+                                  <br>
+                                  <input type="radio" name='category_BOW_part' value="Religious affiliation">Religious affiliation
+                                  <br>
+                                  <input type="radio" name='category_BOW_part' value="Mockery">Mockery
+                                  <br>
+                                  <input type="radio" name='category_BOW_part' value="Sexual harrasment">Sexual harrasment
+                                  <br>
+                                  <input type="radio" name='category_BOW_part' value="Normal">Normal
+                                  <br><br>
+                                  <label>write justification: </label><br>
+                                  <textarea name="justification_category_BOW_part" rows="7" cols="32">
+                                  </textarea>
+                                  <br><br>
+                                  <input type="text" id="hidden_text" hidden="True" name="comment_part">
+                                  <input type="button" value="Label" onclick="toggle_div(mid_x, mid_y)">
+                                  <input type="button" value="Cancel" onclick="remove_div()">
+                              </form>
+                              `).appendTo(div)
+
+                  let word_for_hate_speech = window.getSelection()
+                  form_elem = document.getElementById("hidden_text")
+                  form_elem.value = word_for_hate_speech
+              }
           });
       });
 
+
       $(function(){
           $(prof_pic).click(function(e){
-              var div = $('<div id="profile_pic_upload">')
+              var div = $('<div id="profile_pic_upload" + counter>')
                   .css({
                       "left": (e.pageX - 200) + 'px',
                       "top": (e.pageY + 30) + 'px',
@@ -501,13 +588,42 @@
 
       function remove_div() {
           div = document.getElementById('annotation_block');
-          div.remove();     
+          let elem = addedlines.pop()
+          $(elem).remove();
+          div.remove();
       }
-      function toggle_div() {
+      var BOW_cate = null, BOW_cate_just = null;
+      BOW_cate = document.querySelector('input[name="category_BOW"]');
+      BOW_cate_just = document.querySelector('input[name="justification_category_BOW"]');
+
+      function toggle_div(x, y) {
           div = document.getElementById('annotation_block');
-          div.hidden = True;
+
+          try {
+                BOW_cate_part = document.querySelector('input[name="category_BOW_part"]:checked').value;
+                BOW_cate_just_part = document.querySelector('textarea[name="justification_category_BOW_part"]').value.trim();
+
+                BOW_cate.value = BOW_cate.value + "/" + BOW_cate_part
+                BOW_cate_just.value =  BOW_cate_just.value + "/" + BOW_cate_just_part
+          }
+          catch(err) {}
+          var word = $('<div id="text_line_part">'+ BOW_cate_part + '</div>')
+                        .hide()
+                        .fadeIn(250).css({
+                          "position": "absolute",
+                          "left": (x - 20) + 'px',
+                          "top": (y - 30) + 'px',
+                          "height": "3px",
+                          "border-radius": "4px",
+                          "font-size": "12px",
+                          "color": randomColor
+                      });
+          word.innerHTML = BOW_cate_part
+          $(document.body).append(word);
+          div.remove();
       }
 
+      // for pcitures
       function remove_div2() {
           div = document.getElementById('profile_pic_upload');
           div.remove();
@@ -534,7 +650,7 @@
         var distance = countDownDate - now;
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.getElementById("DiscH_Timer") .innerHTML = seconds;
+        document.getElementById("DiscH_Timer").innerHTML = seconds;
 
         /* If the count down is finished, write some text */
         if (distance < 0) {

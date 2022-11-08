@@ -121,18 +121,31 @@ WSGI_APPLICATION = 'DiscH_Website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+
+# REMOVE LATER
+import subprocess
+result = subprocess.run(['heroku', 'pg:credentials:url', 'DATABASE',
+                         '--name', 'default', '-a', 'disch'], stdout=subprocess.PIPE, shell = True)
+cred_str = result.stdout.split(b'\n')[2].decode("utf-8").strip().strip('"')
+cred_str_list = cred_str.split(" ")
+creds = {}
+for cred in cred_str_list:
+    cred_name, cred_val = cred.split('=')
+    creds[cred_name] = cred_val
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'ec2-34-249-161-200.eu-west-1.compute.amazonaws.com',
-        'USER': 'htxlwqytgtefre',
-        'NAME': 'd8u6gs4dfnh8uv',
+        'HOST': creds['host'],
+        'USER': creds['user'],
+        'NAME': creds['dbname'],
         'PORT': "5432",
-        'PASSWORD': '03c9291468861b67fc8c7bb3f70ad228aa848c69521d711b3a41a98b6d50e1c4'
+        'PASSWORD': creds['password']
     }
 }
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 # DATABASES = {
 #     'default': {
