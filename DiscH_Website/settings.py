@@ -123,42 +123,40 @@ WSGI_APPLICATION = 'DiscH_Website.wsgi.application'
 
 
 # REMOVE LATER
-import subprocess
-result = subprocess.run(['heroku', 'pg:credentials:url', 'DATABASE',
-                         '--name', 'default', '-a', 'disch'], stdout=subprocess.PIPE, shell = True)
-cred_str = result.stdout.split(b'\n')[2].decode("utf-8").strip().strip('"')
-cred_str_list = cred_str.split(" ")
-creds = {}
-for cred in cred_str_list:
-    cred_name, cred_val = cred.split('=')
-    creds[cred_name] = cred_val
+# import subprocess
+# result = subprocess.run(['heroku', 'pg:credentials:url', 'DATABASE',
+#                          '--name', 'default', '-a', 'disch'], stdout=subprocess.PIPE, shell = True)
+# cred_str = result.stdout.split(b'\n')[2].decode("utf-8").strip().strip('"')
+# cred_str_list = cred_str.split(" ")
+# creds = {}
+# for cred in cred_str_list:
+#     cred_name, cred_val = cred.split('=')
+#     creds[cred_name] = cred_val
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': creds['host'],
-        'USER': creds['user'],
-        'NAME': creds['dbname'],
-        'PORT': "5432",
-        'PASSWORD': creds['password']
-    }
-}
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
 
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'HOST': 'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
-#         'USER': 'sccsrrptrucvvl',
-#         'NAME': 'd345hn5e4ma3hr',
+#         'HOST': creds['host'],
+#         'USER': creds['user'],
+#         'NAME': creds['dbname'],
 #         'PORT': "5432",
-#         'PASSWORD': 'fda79c53eed53e5350563e092c66387f08c3a9b748cf7ec166d645a87cbb7cde'
+#         'PASSWORD': creds['password']
 #     }
 # }
-# db_from_env = dj_database_url.config(conn_max_age=600)
-# DATABASES['default'].update(db_from_env)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': 'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
+        'USER': 'sccsrrptrucvvl',
+        'NAME': 'd345hn5e4ma3hr',
+        'PORT': "5432",
+        'PASSWORD': 'fda79c53eed53e5350563e092c66387f08c3a9b748cf7ec166d645a87cbb7cde'
+    }
+}
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # DATABASES = {
 #     'default': {
