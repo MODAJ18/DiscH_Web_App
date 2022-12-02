@@ -219,8 +219,7 @@ def questions(request):
 
 def reg(request):
     template = loader.get_template('DiscH_prototype/new/Register.html')
-
-    global account_creation_failed, new_user, password_repeat_failed
+    global account_creation_failed, new_user, password_repeat_failed, password_verify_message
     request.session['account_creation_failed'] = account_creation_failed
     request.session['password_repeat_failed'] = password_repeat_failed
 
@@ -250,8 +249,19 @@ def reg(request):
         else:
             password_repeat_failed = False
 
+        # password verification
+        try:
+            validate_password(password, user=request.user)
+            password_verify_message = None
+        except ValidationError as error:
+            password_verify_message = list(error)
+
         if fname and lname and email and password:
-            if User.objects.filter(email=email):
+            if (password_verify_message is not None):
+                account_login_failed = False
+                request.session['account_login_failed'] = account_login_failed
+                return redirect('/reg/')
+            elif User.objects.filter(email=email):
                 account_creation_failed = True
                 request.session['account_creation_failed'] = account_creation_failed
                 return redirect('/reg/')
@@ -271,19 +281,20 @@ def reg(request):
 
     context = {
                 'account_creation_failed': request.session['account_creation_failed'],
-                'password_repeat_failed': request.session['password_repeat_failed'], 
+                'password_repeat_failed': request.session['password_repeat_failed'],
+                'password_verify_message': password_verify_message
     }
     password_repeat_failed = False
     account_creation_failed = False
+    password_verify_message = None
 
     return HttpResponse(template.render(context, request))
 
 def Login(request):
     template = loader.get_template('DiscH_prototype/new/Log-In.html')
-    global account_login_failed, password_verify_message
+    global account_login_failed
     request.session['account_login_failed'] = account_login_failed
     # request.session['password_verify_message'] = password_verify_message
-
 
     if request.GET.get('search'):
         search_value = request.GET.get('search')
@@ -300,11 +311,11 @@ def Login(request):
     if request.method == 'POST':
         email = request.POST['email']
 
-        try:
-            validate_password(request.POST['password'], user=None)
-            password_verify_message = None
-        except ValidationError as error:
-            password_verify_message = list(error)
+        # try:
+        #     validate_password(request.POST['password'], user=None)
+        #     password_verify_message = None
+        # except ValidationError as error:
+        #     password_verify_message = list(error)
             # print(list(error))
             # return HttpResponse(error)
 
@@ -318,11 +329,7 @@ def Login(request):
         password = request.POST['password']
         if email and password:
             user = authenticate(request, username=username, password=password)
-            if (password_verify_message is not None):
-                account_login_failed = False
-                request.session['account_login_failed'] = account_login_failed
-                return redirect('/Login/')
-            elif (user is not None):
+            if (user is not None):
                 login(request, user)
                 return redirect('/')
             else:
@@ -330,11 +337,9 @@ def Login(request):
                 request.session['account_login_failed'] = account_login_failed
                 return redirect('/Login/')
 
-    context = {'account_login_failed': account_login_failed,
-               'password_verify_message': password_verify_message
+    context = {'account_login_failed': account_login_failed
                }
     account_login_failed = False
-    password_verify_message = None
     return HttpResponse(template.render(context, request))
 
 def dashboard(request):

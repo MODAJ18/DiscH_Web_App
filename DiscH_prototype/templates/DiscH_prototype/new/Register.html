@@ -86,6 +86,11 @@
             {% if password_repeat_failed %}
                 <p style="color:red; padding-left: 10px;">passwords written are not matched!</p>
             {% endif %}
+
+              {% for pvm in password_verify_message %}
+                <p style="color:red; padding-left: 10px; margin: 0px">{{pvm}}</p>
+              <br>
+              {% endfor %}
             <div class="u-form-group u-form-name">
               <label for="name-436e" class="u-label">First Name</label>
               <input type="text" placeholder="Enter First Name" id="name-436e" name="fname" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required="">
@@ -106,6 +111,13 @@
               <label for="text-883a" class="u-label">Repeat Password</label>
               <input type="password" placeholder="" id="text-883a" name="text-1" class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white">
             </div>
+
+              <ul>
+                <li>Your password can’t be too similar to your other personal information.</li>
+                <li>Your password must contain at least 8 characters.</li>
+                <li>Your password can’t be a commonly used password.</li>
+                <li>Your password can’t be entirely numeric.</li>
+            </ul>
             <div class="u-align-left u-form-group u-form-submit">
               <a href="#" class="u-btn u-btn-submit u-button-style u-btn-1" onClick="document.form_reg.submit()">Register<br>
               </a>
