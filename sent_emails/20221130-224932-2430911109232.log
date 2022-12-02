@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on localhost:8000
+From: webmaster@localhost
+To: modaj18@gmail.com
+Date: Wed, 30 Nov 2022 19:49:32 -0000
+Message-ID: <166983777230.472560.3488954372109864782@DESKTOP-V4EUKV3>
+
+
+You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+Please go to the following page and choose a new password:
+
+http://localhost:8000/accounts/reset/OQ/bfq4qk-be96b31355bed64c37dc6e17e234d940/
+
+Your username, in case you’ve forgotten: modaj
+
+Thanks for using our site!
+
+The localhost:8000 team
+
+
+
+-------------------------------------------------------------------------------

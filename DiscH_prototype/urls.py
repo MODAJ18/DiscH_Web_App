@@ -18,6 +18,7 @@ urlpatterns = [
     path('questions/search/<str:search_term>/', views.search_page, name='search_page'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('about/', views.about, name='about'),
+    path('reset/', views.email, name='email')
     
     # path(r'^api/public/', views.public),
     # path(r'^api/private/', views.private)

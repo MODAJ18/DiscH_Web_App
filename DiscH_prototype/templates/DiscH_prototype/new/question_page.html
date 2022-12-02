@@ -62,6 +62,87 @@
           color: gray;
           background: lightblue;
         }
+
+
+        /* The Modal (background) */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          -webkit-animation-name: fadeIn; /* Fade in the background */
+          -webkit-animation-duration: 0.4s;
+          animation-name: fadeIn;
+          animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .modal-content {
+          position: fixed;
+          bottom: 0;
+          background-color: #fefefe;
+          width: 100%;
+          -webkit-animation-name: slideIn;
+          -webkit-animation-duration: 0.4s;
+          animation-name: slideIn;
+          animation-duration: 0.4s
+        }
+
+        /* The Close Button */
+        .close {
+          color: white;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .modal-header {
+          padding: 2px 16px;
+          background-color: #2596be;
+          color: white;
+        }
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-footer {
+          padding: 2px 16px;
+          background-color: #5cb85c;
+          color: white;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes slideIn {
+          from {bottom: -300px; opacity: 0}
+          to {bottom: 0; opacity: 1}
+        }
+
+        @keyframes slideIn {
+          from {bottom: -300px; opacity: 0}
+          to {bottom: 0; opacity: 1}
+        }
+
+        @-webkit-keyframes fadeIn {
+          from {opacity: 0}
+          to {opacity: 1}
+        }
+
+        @keyframes fadeIn {
+          from {opacity: 0}
+          to {opacity: 1}
+        }
     </style>
 
   </head>
@@ -123,18 +204,18 @@
                     src="{{ picture.url }}" alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
       {% else %}
               <img id="prof_pic" class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
-                   style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
+                   style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;
                    src="/media/images/profile/default-profile-photo.jpg"
                    alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
       {% endif %}
 
   </div></header>
       {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:darkred; list-style: none;">{{ message }}</li>
-        {% endfor %}
-    </ul>
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:darkred; list-style: none;">{{ message }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
     <section class="u-align-center u-clearfix u-image u-section-1" id="carousel_15c1" data-image-width="951" data-image-height="580">
       <div class="u-clearfix u-sheet u-sheet-1">
@@ -206,57 +287,65 @@
             </div>
 
             {% if question_selected %}
-            <h3 class="u-text u-text-default u-text-1">Question {{ question_selected.question_id }}<br>
-            </h3>
-            <div style="height: 680px" class="u-align-left u-container-style u-gradient u-group u-radius-25 u-shape-round u-group-2">
-              <div class="u-container-layout u-container-layout-2">
-                <div class="u-container-style u-group u-radius-30 u-shape-round u-white u-group-3">
-                  <div class="u-container-layout u-container-layout-3">
-                    <p class="u-text u-text-2 text_selection_mod" id="main_text"> "{{ question_selected.description|slice:":1000" }}" </p>
+                <h3 class="u-text u-text-default u-text-1">Question {{ question_selected.question_id }}<br>
+                </h3>
+                <div style="height: 680px" class="u-align-left u-container-style u-gradient u-group u-radius-25 u-shape-round u-group-2">
+                  <div class="u-container-layout u-container-layout-2">
+                    <div class="u-container-style u-group u-radius-30 u-shape-round u-white u-group-3">
+                      <div class="u-container-layout u-container-layout-3">
+                        <p class="u-text u-text-2 text_selection_mod" id="main_text"> "{{ question_selected.description|slice:":1000" }}" </p>
+                      </div>
+                    </div>
+                    <p style="margin-left: 20px; font-size: 20px"><b>What type of speech is this?</b></p>
+
+
+
+                  <form method="post" name="annotate">
+                      {% csrf_token %}
+                      <ul>
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Racist">Racist
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Violent">Violent
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Religious affiliation">Religious affiliation
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Mockery">Mockery
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Sexual harrasment">Sexual harassment
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Normal">Normal
+                          <input hidden="True" name="category_BOW" value="">
+                          <input hidden="True" name="justification_category_BOW" value="">
+                          <input hidden="True" name="question_answered" value="True">
+                          {% if request.session.questions_game %}
+                            <input hidden="True" name="game" value="start">
+                          {% else %}
+
+                          {% endif %}
+    <!--                      <input hidden="True" name="post_comment" value="">-->
+    <!--                      <input hidden="True" name="remove_comment" value="">-->
+                      </ul>
+                      <div class="u-form-group u-form-message u-form-partition-factor-2 u-label-top" style="margin-left: 25px; width: 800px">
+                        <label for="message-19be" class="u-label u-label-7">Justification for choosing the type</label>
+                            <textarea placeholder="write here .." name="justification_category" rows="3" cols="50" id="message-19be" style="font-size: 12px"
+                                  class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white"></textarea>
+                      </div>
+                      <a class="u-active-none u-border-2 u-border-active-palette-2-dark-1 u-bor
+                      der-hover-palette-2-base u-border-palette-1-base u-btn u-button-style u-hover-none
+                      u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1"
+                         onClick='document.annotate.submit()'>Submit Answer</a>
+                  </form>
+
+
+                      {% if request.session.questions_game %}
+                      <a href="javascript:{}" onclick="document.getElementById('game_form').submit();"
+                         style="text-decoration:none; display: block; width:50px">
+                          <img style="padding:0px; margin-left:800px; margin-top:-40px; height: 40px"
+                               src="{% static 'DiscH_prototype/new/images/2267911-c2f4cf7f.png' %}"
+                               alt="">
+                          <div style="margin-top: -46px; margin-left: 756px; color: #DB545A; font-weight: bold;">pass</div>
+                      </a>
+                      {% else %}
+
+                      {% endif %}
+
                   </div>
                 </div>
-                <p style="margin-left: 20px; font-size: 20px"><b>What type of speech is this?</b></p>
-
-
-
-              <form method="post" name="annotate">
-                  {% csrf_token %}
-                  <ul>
-                      <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Racist">Racist
-                      <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Violent">Violent
-                      <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Religious affiliation">Religious affiliation
-                      <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Mockery">Mockery
-                      <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Sexual harrasment">Sexual harassment
-                      <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Normal">Normal
-                      <input hidden="True" name="category_BOW" value="">
-                      <input hidden="True" name="justification_category_BOW" value="">
-                      <input hidden="True" name="question_answered" value="True">
-<!--                      <input hidden="True" name="post_comment" value="">-->
-<!--                      <input hidden="True" name="remove_comment" value="">-->
-                  </ul>
-                  <div class="u-form-group u-form-message u-form-partition-factor-2 u-label-top" style="margin-left: 25px; width: 800px">
-                    <label for="message-19be" class="u-label u-label-7">Justification for choosing the type</label>
-                        <textarea placeholder="write here .." name="justification_category" rows="3" cols="50" id="message-19be" style="font-size: 12px"
-                              class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white"></textarea>
-                  </div>
-                  <a class="u-active-none u-border-2 u-border-active-palette-2-dark-1 u-border-hover-palette-2-base u-border-palette-1-base u-btn u-button-style u-hover-none u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1" onClick='document.annotate.submit()'>Submit Answer</a>
-              </form>
-
-
-                  {% if request.session.questions_game %}
-                  <a href="javascript:{}" onclick="document.getElementById('game_form').submit();" style="text-decoration:none">
-                      <img style="padding:0px; margin-left:800px; margin-top:-40px; height: 40px" src="{% static 'DiscH_prototype/new/images/2267911-c2f4cf7f.png' %}" alt="">
-                      <div style="margin-top: -46px; margin-left: 756px; color: #DB545A; font-weight: bold;">pass</div>
-                  </a>
-                  {% else %}
-
-                  {% endif %}
-
-              </div>
-            </div>
-
-
-
             {% else %}
               <h3 class="u-text u-text-default u-text-1">None<br>
               </h3>
@@ -270,8 +359,6 @@
                   <a href="https://nicepage.one" class="u-active-none u-border-2 u-border-active-palette-2-dark-1 u-border-hover-palette-2-base u-border-palette-1-base u-btn u-button-style u-hover-none u-none u-text-hover-palette-2-base u-text-palette-1-base u-btn-1">Submit Answer</a>
                 </div>
               </div>
-
-
             {% endif %}
 
 
@@ -418,6 +505,25 @@
             </div>
         </div>
     </div>
+
+<!--    <section class="u-align-center">-->
+
+    {% if gained_points %}
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+<!--            <div class="modal-header">-->
+<!--&lt;!&ndash;                <h2>Question Answered</h2>&ndash;&gt;-->
+<!--            </div>-->
+              <span class="close" style="display: none">&times;</span>
+            <div class="modal-body">
+              <p>You Gained 5 Points, Good Job!</p>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+<!--        </section>-->
     
     
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-f6ad"><div class="u-clearfix u-sheet u-sheet-1">
@@ -659,6 +765,31 @@
           document.getElementById('game_form').submit();
         }
       }, 1000);
+
+
+      // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    modal.style.display = "block";
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
 
   </script>
   

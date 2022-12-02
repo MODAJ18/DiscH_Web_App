@@ -21,6 +21,7 @@ from django.conf.urls.static import static   # add this
 urlpatterns = [
     path('', include('DiscH_prototype.urls')),
     path('admin/', admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
 
 # add this

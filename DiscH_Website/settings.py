@@ -132,8 +132,8 @@ WSGI_APPLICATION = 'DiscH_Website.wsgi.application'
 # for cred in cred_str_list:
 #     cred_name, cred_val = cred.split('=')
 #     creds[cred_name] = cred_val
-
-
+#
+#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -262,3 +262,13 @@ JWT_AUTH = {
     'JWT_ISSUER': JWT_ISSUER,
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
+
+# ADDED
+# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+# EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "disch.web@gmail.com"
+EMAIL_HOST_PASSWORD = "mpiywhjjhuikwjww"
