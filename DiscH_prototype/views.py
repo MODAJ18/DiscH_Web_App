@@ -359,10 +359,10 @@ def dashboard(request):
 
         # latest questions
         c_user = request.user.id
-        user_answers = Answer.objects.filter(account_id_id=c_user)
+        user_answers = Answer.objects.filter(account_id_id=c_user).order_by('-date')
         questions = Question.objects
         user_answers_questions =  []
-        for ua in user_answers:
+        for ua in user_answers[:5]:
             q_id = ua.question_id_id
             q = questions.filter(question_id=q_id)[0]
             user_answers_questions.append(q)
@@ -370,6 +370,7 @@ def dashboard(request):
         if len(user_answers_questions) == 0:
             context['latest_user_questions'] = None
         else:
+
             context['latest_user_questions'] = user_answers_questions
 
         if request.method == 'POST':
