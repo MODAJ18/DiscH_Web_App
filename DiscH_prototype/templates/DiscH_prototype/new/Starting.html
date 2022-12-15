@@ -59,10 +59,15 @@
     </style>
   </head>
   <body class="u-body u-xl-mode" data-lang="en"><header class="u-align-center-xs u-border-1 u-border-grey-25 u-clearfix u-header u-header" id="sec-14f5"><div class="u-clearfix u-sheet u-sheet-1">
-        <a href="{% url 'starting' %}" data-page-id="56608174" class="u-image u-logo u-image-1" data-image-width="201" data-image-height="48" title="Starting">
+
+
+      <a href="{% url 'starting' %}" data-page-id="56608174" class="u-image u-logo u-image-1"
+         data-image-width="201" data-image-height="48" title="Starting">
           <img src="{% static 'DiscH_prototype/new/images/gb_name3.png' %}" class="u-logo-image u-logo-image-1">
         </a>
-        <form action="#" method="get" class="u-border-1 u-border-grey-15 u-search u-search-right u-search-1">
+
+        <form action="#" method="get"
+              class="u-border-1 u-border-grey-15 u-search u-search-right u-search-1">
           <button class="u-search-button" type="submit">
             <span class="u-search-icon u-spacing-10 u-text-grey-40">
               <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 56.966 56.966" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-b04b"></use></svg>
@@ -72,17 +77,33 @@
           <input class="u-search-input" type="search" name="search" value="" placeholder="Search">
           <input type="hidden" name="formServices" value="bacdadb9cccfa1e7b3d84ba543750a74">
         </form>
+
         <nav class="u-align-left u-font-size-14 u-menu u-menu-one-level u-nav-spacing-25 u-offcanvas u-menu-1">
           <div class="menu-collapse">
-            <a class="u-button-style u-custom-text-active-color u-nav-link" href="#" style="padding: 4px 0px; font-size: calc(1em + 8px);">
-              <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 302 302" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-7b92"></use></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg-7b92" x="0px" y="0px" viewBox="0 0 302 302" style="enable-background:new 0 0 302 302;" xml:space="preserve" class="u-svg-content"><g><rect y="36" width="302" height="30"></rect><rect y="236" width="302" height="30"></rect><rect y="136" width="302" height="30"></rect>
+
+              <a class="u-button-style u-custom-text-active-color u-nav-link" href="#"
+                 style="padding: 4px 0px; font-size: calc(1em + 8px);">
+              <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice"
+                   viewBox="0 0 302 302" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                       xlink:href="#svg-7b92"></use></svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                   version="1.1" id="svg-7b92" x="0px" y="0px" viewBox="0 0 302 302"
+                   style="enable-background:new 0 0 302 302;" xml:space="preserve" class="u-svg-content"><g><rect
+                      y="36" width="302" height="30"></rect><rect y="236" width="302"
+                                                                  height="30"></rect><rect
+                      y="136" width="302" height="30"></rect>
 </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
             </a>
           </div>
-          <div class="u-custom-menu u-nav-container">
-            <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" href="{% url 'questions' %}" style="padding: 10px 20px;">Questions</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" href="{% url 'dashboard' %}" style="padding: 10px 20px;">Dashboard</a>
+
+            <div class="u-custom-menu u-nav-container">
+            <ul class="u-nav u-unstyled u-nav-1">
+                <li class="u-nav-item"><a
+                        class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base"
+                        href="{% url 'questions' %}" style="padding: 10px 20px;">Questions</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base"
+                               href="{% url 'dashboard' %}" style="padding: 10px 20px;">Dashboard</a>
 
   {% if login_state %}
     <form method="post" name="myForm">
@@ -96,7 +117,9 @@
 
 
 
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base" href="{% url 'about' %}" style="padding: 10px 20px;">About</a>
+</li><li class="u-nav-item">
+                <a class="u-button-style u-nav-link u-text-active-black u-text-hover-palette-2-base"
+                   href="{% url 'about' %}" style="padding: 10px 20px;">About</a>
 </li></ul>
 
           </div>
@@ -121,11 +144,16 @@
           </div>
 
         </nav>
-        <img class="u-hover-feature u-image u-image-contain u-image-round u-preserve-proportions u-image-2" src="{% static 'DiscH_prototype/new/images/gb_app_icon.png' %}" alt="" data-image-width="500" data-image-height="500" data-href="{% url 'starting' %}" data-page-id="56608174">
+        <img class="u-hover-feature u-image u-image-contain u-image-round u-preserve-proportions u-image-2"
+             src="{% static 'DiscH_prototype/new/images/gb_app_icon.png' %}"
+             alt="" data-image-width="500" data-image-height="500"
+             data-href="{% url 'starting' %}" data-page-id="56608174">
 
       {% if picture %}
-              <img id="prof_pic" class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
-                     style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
+              <img id="prof_pic"
+                   class="u-border-1 u-border-grey-60 u-hover-feature u-image
+                   u-image-round u-preserve-proportions u-radius-50 u-image-3"
+                     style="width:37px; height:37px; margin-top: -50px; margin-left: 1280px;"
                     src="{{ picture.url }}" alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
       {% else %}
             {% if login_state %}

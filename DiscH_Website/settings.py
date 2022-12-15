@@ -132,8 +132,6 @@ WSGI_APPLICATION = 'DiscH_Website.wsgi.application'
 # for cred in cred_str_list:
 #     cred_name, cred_val = cred.split('=')
 #     creds[cred_name] = cred_val
-#
-#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
