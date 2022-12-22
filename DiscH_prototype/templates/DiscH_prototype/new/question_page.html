@@ -303,13 +303,15 @@
 
                   <form method="post" name="annotate">
                       {% csrf_token %}
-                      <ul>
-                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Racist">Racist
-                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Violent">Violent
-                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Religious affiliation">Religious affiliation
-                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Mockery">Mockery
-                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Sexual harrasment">Sexual harassment
-                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Normal">Normal
+                      <ul style="align-items: center">
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Racist">Racist (عنصري)
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Violent">Violent (عنيف)
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Religious affiliation">
+                          Religious affiliation (متعلق بالدين)
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Mockery">Mockery (ساخر)
+                          <br>
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Sexual harrasment">Sexual harassment (إغاظة جنسية)
+                          <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Normal">Normal (طبيعي)
                           <input hidden="True" name="category_BOW" value="">
                           <input hidden="True" name="justification_category_BOW" value="">
                           <input hidden="True" name="question_answered" value="True">
