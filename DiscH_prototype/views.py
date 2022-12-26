@@ -785,12 +785,11 @@ def question_page(request, question_id):
                 # BOW answer
                 BOW = request.POST.get('category_BOW').split('/')[1:]
                 BOW_just = request.POST.get('justification_category_BOW').split('/')[1:]
+                BOW_comms = request.POST.get('BOW_comment').split('/')[1:]
                 if len(BOW) > 0:
                     for i in range(len(BOW)):
                         prev_answer_BOW = Answer_BOW.objects.filter(question_id_id=question_id,
                                                                     account_id_id=request.user.id)
-                        # BOW_Justification = request.POST.get('justification_category_BOW')
-                        BOW_comment_part = request.POST.get('comment_part')
 
                         if len(prev_answer_BOW) > 2:
                             # prev_answer_BOW.order_by('?').values_list('pk', flat=True)[0:1]
@@ -799,7 +798,7 @@ def question_page(request, question_id):
                             random_id = prev_answer_BOW.order_by('?')[:1].get().answer_id
                             prev_answer_BOW.filter(answer_id=random_id).update(answer_category_num=BOW[i],
                                                                                answer_justification=BOW_just[i],
-                                                                               answer_text_comment="",
+                                                                               answer_text_comment=BOW_comms[i],
                                                                                answer_upvote=0)
                             messages.add_message(request, messages.WARNING,
                                                  'beware! one of your Bag-Of-Word responses have been replaced!')
@@ -811,13 +810,13 @@ def question_page(request, question_id):
                                 latest_answer_id = Answer_BOW.objects.aggregate(Max('answer_id'))['answer_id__max'] + 1
                                 ans = Answer_BOW(answer_id=latest_answer_id, answer_category_num=BOW[i],
                                                  answer_justification=BOW_just[i],
-                                                 answer_text_comment="",
+                                                 answer_text_comment=BOW_comms[i],
                                                  answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id,
                                                  date=datetime.date.today())
                             except:
                                 ans = Answer_BOW(answer_id=1, answer_category_num=BOW[i],
                                                  answer_justification=BOW_just[i],
-                                                 answer_text_comment="",
+                                                 answer_text_comment=BOW_comms[i],
                                                  answer_upvote=0, account_id_id=request.user.id, question_id_id=question_id,
                                                  date=datetime.date.today())
                             ans.save()
@@ -904,8 +903,6 @@ def question_page(request, question_id):
                 # context['questions_game'] = request.session['questions_game']
                 # context['question_order'] = request.session['question_order']
                 return redirect(f"/questions/{request.session['questions_game'][request.session['question_order']]}")
-            else:
-                return HttpResponse('unknown post')
 
         context['question_answered'] = request.POST.get('question_answered')
 

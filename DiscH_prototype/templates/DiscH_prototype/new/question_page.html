@@ -315,6 +315,7 @@
                           <input style="margin-left: 15px; margin-right: 5px;" type="radio" name='category' value="Normal">Normal (طبيعي)
                           <input hidden="True" name="category_BOW" value="">
                           <input hidden="True" name="justification_category_BOW" value="">
+                          <input hidden="True" name="BOW_comment" value="5">
                           <input hidden="True" name="question_answered" value="True">
                           {% if request.session.questions_game %}
                             <input hidden="True" name="game" value="start">
@@ -705,6 +706,7 @@
       var BOW_cate = null, BOW_cate_just = null;
       BOW_cate = document.querySelector('input[name="category_BOW"]');
       BOW_cate_just = document.querySelector('input[name="justification_category_BOW"]');
+      comment_acc = document.querySelector('input[name="BOW_comment"]');
 
       function toggle_div(x, y) {
           div = document.getElementById('annotation_block');
@@ -712,9 +714,11 @@
           try {
                 BOW_cate_part = document.querySelector('input[name="category_BOW_part"]:checked').value;
                 BOW_cate_just_part = document.querySelector('textarea[name="justification_category_BOW_part"]').value.trim();
+                comment_acc_part = document.querySelector('input[name="comment_part"]').value.trim();
 
                 BOW_cate.value = BOW_cate.value + "/" + BOW_cate_part
                 BOW_cate_just.value =  BOW_cate_just.value + "/" + BOW_cate_just_part
+                comment_acc.value = comment_acc.value + "/" + comment_acc_part
           }
           catch(err) {}
           var word = $('<div id="text_line_part">'+ BOW_cate_part + '</div>')
