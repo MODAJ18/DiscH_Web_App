@@ -192,12 +192,12 @@
 
       {% if picture %}
               <img id="prof_pic" class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
-                     style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
+                     style="width:37px; height:37px; margin-top: -50px; margin-left: 1280px;"
                     src="{{ picture.url }}" alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
       {% else %}
             {% if login_state %}
                   <img id="prof_pic" class="u-border-1 u-border-grey-60 u-hover-feature u-image u-image-round u-preserve-proportions u-radius-50 u-image-3"
-                       style="width:37px; height:37px; margin-top: -50px; margin-left: 1320px;"
+                       style="width:37px; height:37px; margin-top: -50px; margin-left: 1280px;"
                        src="/media/images/profile/default-profile-photo.jpg"
                        alt="/media/images/profile/default-profile-photo.jpg" data-image-width="200" data-image-height="200" data-href="#">
             {% else %}
@@ -216,7 +216,8 @@
           <input hidden="True" name="game" value="start">
         </form>
 
-        <h5 style="position:absolute; margin-left: 1050px; margin-top: 75px; width: 350px; font-size: 16px;">Wanna make this more fun? Try this</h5>
+        <p style="position:absolute; margin-left: 1035px; margin-top: 75px; width: 350px;
+        font-size: 13px;">Wanna make this more fun? Try this</p>
         <a href="javascript:{}" onclick="document.getElementById('game_form').submit();" class="btn-grad-mod" style="">
           <span><img src="{% static 'DiscH_prototype/new/images/808476.png' %}" alt="game icon" style="height: 40px; margin-right: 20px; "></span>
           <span style="text-decoration: none; font-weight: bold; font-size: 18px;">Play</span>

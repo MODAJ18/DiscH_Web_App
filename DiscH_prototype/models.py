@@ -13,6 +13,12 @@ class Question(models.Model):
     num_response = models.IntegerField(default=0)
     label_in_question = models.CharField(max_length=70)
 
+class Question_select(models.Model):
+    question_id2 = models.IntegerField(primary_key=True)
+    description2 = models.TextField()
+    num_response2 = models.IntegerField(default=0)
+    label_in_question2 = models.CharField(max_length=70)
+
 class Achievement(models.Model):
     achievement_id = models.IntegerField(primary_key=True)
     achievement_type = models.CharField(max_length=100)
