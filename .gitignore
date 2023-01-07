@@ -1,3 +1,4 @@
 data/labeled_data.csv
 data/hatespeech/
 moh_test/
+notebooks/test_trainer/
